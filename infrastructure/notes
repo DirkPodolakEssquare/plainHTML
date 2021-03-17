@@ -1,0 +1,28 @@
+// <editor-fold desc="TEMPLATE :: grant access to group">
+        //        Bucket rawData = new Bucket(this, "raw-data");
+        //        Group dataScience = new Group(this, "data-science");
+        //        rawData.grantRead(dataScience);
+        // </editor-fold>
+
+        // <editor-fold desc="TEMPLATE :: create queue and register it's URL in a lambda">
+//        final Queue jobsQueue = new Queue(this, "jobs");
+//        Function createJobLambda = Function.Builder.create(this, "create-job")
+//                                                   .handler("index.handler")
+//                                                   .code(Code.fromAsset("./create-job-lambda-code"))
+//                                                   .environment(new HashMap<String, String>() {{
+//                                                       put("QUEUE_URL", jobsQueue.getQueueUrl());
+//                                                   }}).build();
+        // </editor-fold>
+
+        // <editor-fold desc="TEMPLATE :: create bucket that notifies sns topic">
+//        Bucket bucket = new Bucket(this, "bucket");
+//        Topic topic = new Topic(this, "topic");
+//        if (prefix != null)
+//            bucket.addObjectCreatedNotification(new SnsDestination(topic),
+//                                                NotificationKeyFilter.builder().prefix(prefix).build());
+        // </editor-fold>
+
+        // <editor-fold desc="TEMPLATE :: add sqs listener to sns topic">
+//        NotifyingBucket images = new NotifyingBucket(this, "MyNotifyingBucket", "/images");
+//        images.topic.addSubscription(new SqsSubscription(queue));
+        // </editor-fold>
