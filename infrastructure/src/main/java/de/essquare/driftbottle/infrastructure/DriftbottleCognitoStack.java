@@ -2,6 +2,8 @@ package de.essquare.driftbottle.infrastructure;
 
 import java.util.List;
 
+import software.amazon.awscdk.core.CfnOutput;
+import software.amazon.awscdk.core.CfnOutputProps;
 import software.amazon.awscdk.core.Construct;
 import software.amazon.awscdk.core.Stack;
 import software.amazon.awscdk.core.StackProps;
@@ -11,6 +13,7 @@ import software.amazon.awscdk.services.cognito.CfnUserPool;
 import software.amazon.awscdk.services.cognito.CfnUserPool.AccountRecoverySettingProperty;
 import software.amazon.awscdk.services.cognito.CfnUserPool.RecoveryOptionProperty;
 import software.amazon.awscdk.services.cognito.IUserPool;
+import software.amazon.awscdk.services.cognito.IUserPoolClient;
 import software.amazon.awscdk.services.cognito.Mfa;
 import software.amazon.awscdk.services.cognito.PasswordPolicy;
 import software.amazon.awscdk.services.cognito.SignInAliases;
@@ -25,25 +28,35 @@ import software.amazon.awscdk.services.ssm.StringParameterProps;
 
 public class DriftbottleCognitoStack extends Stack {
 
-    private static final String USER_POOL_NAME = "DriftbottleUserPoolName";
-    private static final String USER_POOL_ID = "DriftbottleUserPoolId";
-    private static final String USER_POOL_CLIENT_NAME = "DriftbottleUserPoolClientName";
-    private static final String USER_POOL_CLIENT_ID = "DriftbottleUserPoolClientId";
+    public static final String USERPOOL_NAME = "DriftbottleUserpoolName";
+    public static final String USERPOOL_ID = "DriftbottleUserpoolId";
+    public static final String USERPOOL_CLIENT_NAME = "DriftbottleUserpoolClientName";
+    public static final String USERPOOL_CLIENT_ID = "DriftbottleUserpoolClientId";
+    public static final String SSM_PARAMETER_POSTFIX = "SSMParameter";
+    public static final String OUTPUT_PARAMETER_POSTFIX = "OutputParameter";
 
-    public static final String USER_POOL_ID_SSM_PARAMETER = "DriftbottleUserPoolIdSSMParameter";
-    public static final String SSM_COGNITO_USERPOOL_ID_NAME = "COGNITO_USERPOOL_ID";
+    private IUserPool userPool;
+    private IUserPoolClient userPoolClient;
 
     public DriftbottleCognitoStack(final Construct scope, final String id, final StackProps props) {
         super(scope, id, props);
 
-        UserPool userPool = createUserPool();
-        createUserPoolClient(userPool);
-        storeUserpoolIdInSSM(userPool);
+        createUserPool();
+        createUserPoolClient();
     }
 
-    private UserPool createUserPool() {
+    public IUserPool getUserPool() {
+        return userPool;
+    }
+
+    public IUserPoolClient getUserPoolClient() {
+        return userPoolClient;
+    }
+
+    private void createUserPool() {
+        // create userpool
         UserPoolProps userPoolProps = UserPoolProps.builder()
-                                                   .userPoolName(USER_POOL_NAME)
+                                                   .userPoolName(USERPOOL_NAME)
                                                    .signInAliases(SignInAliases.builder()
                                                                                .email(true)
                                                                                .build())
@@ -68,7 +81,7 @@ public class DriftbottleCognitoStack extends Stack {
                                                    .selfSignUpEnabled(true)
                                                    .build();
 
-        UserPool userPool = new UserPool(this, USER_POOL_ID, userPoolProps);
+        userPool = new UserPool(this, USERPOOL_ID, userPoolProps);
         CfnUserPool cfnUserPool = (CfnUserPool) userPool.getNode()
                                                         .getDefaultChild();
         assert cfnUserPool != null;
@@ -84,26 +97,43 @@ public class DriftbottleCognitoStack extends Stack {
         cfnUserPool.setUserPoolAddOns(CfnUserPool.UserPoolAddOnsProperty.builder()
                                                                         .advancedSecurityMode("OFF")
                                                                         .build());
-        return userPool;
+
+        // store userpool id in SSM parameter storage
+        StringParameterProps stringParameterProps = StringParameterProps.builder()
+                                                                        .parameterName(USERPOOL_ID + SSM_PARAMETER_POSTFIX)
+                                                                        .stringValue(userPool.getUserPoolId())
+                                                                        .build();
+        new StringParameter(this, USERPOOL_ID + SSM_PARAMETER_POSTFIX, stringParameterProps);
+
+        // output the userpool id
+        CfnOutputProps cfnOutputProps = CfnOutputProps.builder()
+                                                      .value(userPool.getUserPoolId())
+                                                      .build();
+        new CfnOutput(this, USERPOOL_ID + OUTPUT_PARAMETER_POSTFIX, cfnOutputProps);
     }
 
-    private void createUserPoolClient(UserPool userPool) {
+    private void createUserPoolClient() {
+        // create userpool client
         UserPoolClientProps userPoolClientProps = UserPoolClientProps.builder()
                                                                      .userPool(userPool)
                                                                      .generateSecret(false)
                                                                      .preventUserExistenceErrors(true)
-                                                                     .userPoolClientName(USER_POOL_CLIENT_NAME)
+                                                                     .userPoolClientName(USERPOOL_CLIENT_NAME)
                                                                      .authFlows(AuthFlow.builder().userSrp(true).build())
                                                                      .build();
-        new UserPoolClient(this, USER_POOL_CLIENT_ID, userPoolClientProps);
-    }
+        userPoolClient = new UserPoolClient(this, USERPOOL_CLIENT_ID, userPoolClientProps);
 
-    private void storeUserpoolIdInSSM(final UserPool userPool) {
-        String userPoolId = ((IUserPool) userPool).getUserPoolId();
+        // store userpool client id in SSM parameter storage
         StringParameterProps stringParameterProps = StringParameterProps.builder()
-                                                                        .parameterName(SSM_COGNITO_USERPOOL_ID_NAME)
-                                                                        .stringValue(userPoolId)
+                                                                        .parameterName(USERPOOL_CLIENT_ID + SSM_PARAMETER_POSTFIX)
+                                                                        .stringValue(userPoolClient.getUserPoolClientId())
                                                                         .build();
-        new StringParameter(this, USER_POOL_ID_SSM_PARAMETER, stringParameterProps);
+        new StringParameter(this, USERPOOL_CLIENT_ID + SSM_PARAMETER_POSTFIX, stringParameterProps);
+
+        // output the userpool client id
+        CfnOutputProps cfnOutputProps = CfnOutputProps.builder()
+                                                      .value(userPoolClient.getUserPoolClientId())
+                                                      .build();
+        new CfnOutput(this, USERPOOL_CLIENT_ID + OUTPUT_PARAMETER_POSTFIX, cfnOutputProps);
     }
 }

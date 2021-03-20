@@ -1,18 +1,120 @@
+import { aws_config } from '../myconfig.js'
 import '../css/driftbottle.css'
 import Amplify, { Auth } from 'aws-amplify'
 
-const aws_data = {
-  "aws_project_region": "eu-central-1",
-  "aws_cognito_region": "eu-central-1",
-  "aws_user_pools_id": "eu-central-1_XtznInn0X",
-  "aws_user_pools_web_client_id": "4sthaucoul7j03proj2i48rdhi",
-  "oauth": {}
+Amplify.configure(aws_config)
+
+const loginForm = document.getElementById("loginForm")
+if (loginForm) {
+  loginForm.onsubmit = async function loginFormSubmit(event) {
+    event.preventDefault()
+    const email = document.getElementById("userEmail").value
+    const password = document.getElementById("userPassword").value
+
+    try {
+      const user = await Auth.signIn(email, password)
+
+      console.log(user)
+
+      location.href = "index2.html"
+    } catch (e) {
+      console.error(e)
+    }
+  }
 }
 
-Amplify.configure(aws_data)
+
+const registrationForm = document.getElementById("registrationForm")
+if (registrationForm) {
+  registrationForm.onsubmit = async function registrationFormSubmit(event) {
+    event.preventDefault()
+    const email = document.getElementById("userEmail").value
+    const password = document.getElementById("userPassword").value
+    const passwordRepetition = document.getElementById("userPasswordRepetition").value
+
+    if (password !== passwordRepetition) {
+      console.error("password and password repetition do not match")
+      return;
+    }
+
+    try {
+      const { user } = await Auth.signUp({
+        username: email,
+        password: password,
+        attributes: {
+          email: email
+        }
+      });
+      console.log(user);
+
+      location.href = "confirmRegistration.html"
+    } catch (error) {
+      console.log('error signing up:', error);
+    }
+  }
+}
+
+
+const verificationForm = document.getElementById("verificationForm")
+if (verificationForm) {
+  verificationForm.onsubmit = async function verificationFormSubmit(event) {
+    event.preventDefault()
+    const email = document.getElementById("userEmail").value
+    const verificationCode = document.getElementById("verificationCode").value
+
+    try {
+      const user = await Auth.confirmSignUp(email, verificationCode);
+      console.log(user);
+      location.href = "index2.html"
+    } catch (error) {
+      console.log('error signing up:', error);
+    }
+  }
+}
+
+
+
+
+
+
+
+const page = window.location.pathname.split("/").pop()
+
+console.log(page)
+
+if ("index2.html" === page) {
+  handleIndex2()
+}
+
+async function handleIndex2() {
+  try {
+    const user = await Auth.currentAuthenticatedUser({bypassCache: true})
+    console.log(user)
+    console.log(`user ${user.attributes.email} is logged in`)
+
+    document.getElementById("username").textContent = user.attributes.email
+  } catch (e) {
+    console.log("no user logged in")
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // ------------------------------------------------------------------------------------------
-const init = async () => {
+const test = async () => {
   console.log("init")
 
   console.log(document.getElementById("username"))
@@ -37,7 +139,6 @@ const init = async () => {
   }
 }
 
-init()
 // ------------------------------------------------------------------------------------------
 
 

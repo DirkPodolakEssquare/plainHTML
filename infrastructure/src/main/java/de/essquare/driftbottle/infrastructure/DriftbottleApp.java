@@ -17,8 +17,22 @@ public class DriftbottleApp {
 
     public static void main(final String[] args) throws IOException {
         App app = new App();
-        new DriftbottleCognitoStack(app, "DriftbottleCognitoStack", StackProps.builder().env(ESSQUARE_ENVIRONMENT).build());
-        new DriftbottleS3Stack(app, "DriftbottleFrontendS3Stack", StackProps.builder().env(ESSQUARE_ENVIRONMENT).build());
+
+        DriftbottleCognitoStack driftbottleCognitoStack = new DriftbottleCognitoStack(app,
+                                                                                      "DriftbottleCognitoStack",
+                                                                                      StackProps.builder()
+                                                                                                .env(ESSQUARE_ENVIRONMENT)
+                                                                                                .build());
+
+        new DriftbottleS3Stack(app,
+                               "DriftbottleFrontendS3Stack",
+                               StackProps.builder()
+                                         .env(ESSQUARE_ENVIRONMENT)
+                                         .build(),
+                               driftbottleCognitoStack.getUserPool().getUserPoolId(),
+                               driftbottleCognitoStack.getUserPoolClient().getUserPoolClientId(),
+                               ESSQUARE_REGION);
+
         app.synth();
     }
 }

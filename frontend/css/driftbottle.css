@@ -6,3 +6,11 @@ button {
     width: 150px;
     margin-bottom: 20px;
 }
+
+header a.brand {
+    text-decoration: none;
+    font-size: 32px;
+    font-family: Roboto, sans-serif;
+    color: black;
+    letter-spacing: 6px;
+}

@@ -13,15 +13,16 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.js$/i,
         enforce: 'pre',
         use: ['source-map-loader'],
+        exclude: [ path.resolve(__dirname, "myconfig.js") ]
       },{
-        test: /\.js$/,
+        test: /\.js$/i,
         exclude: /node_modules/
       },
       {
-        test: /\.css$/,
+        test: /\.css$/i,
         use: [
           MiniCssExtractPlugin.loader,
           'css-loader'
@@ -36,7 +37,7 @@ module.exports = {
   },
   plugins: [
     new CopyWebpackPlugin({
-      patterns: ['index.html']
+      patterns: ['*.html']
     }),
     new webpack.HotModuleReplacementPlugin(),
     new MiniCssExtractPlugin({

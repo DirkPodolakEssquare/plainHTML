@@ -15,7 +15,7 @@
     <orderEntry type="library" name="Maven: software.amazon.awscdk:cdk-cloud-assembly-schema:1.94.1" level="project" />
     <orderEntry type="library" name="Maven: software.amazon.awscdk:cdk-cx-api:1.94.1" level="project" />
     <orderEntry type="library" name="Maven: software.amazon.awscdk:cdk-region-info:1.94.1" level="project" />
-    <orderEntry type="library" name="Maven: software.constructs:constructs:3.3.65" level="project" />
+    <orderEntry type="library" name="Maven: software.constructs:constructs:3.3.68" level="project" />
     <orderEntry type="library" name="Maven: software.amazon.jsii:jsii-runtime:1.25.0" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.11.4" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.11.4" level="project" />
@@ -36,21 +36,22 @@
     <orderEntry type="library" name="Maven: software.amazon.awscdk:ecr:1.94.1" level="project" />
     <orderEntry type="library" name="Maven: software.amazon.awscdk:ecr-assets:1.94.1" level="project" />
     <orderEntry type="library" name="Maven: software.amazon.awscdk:efs:1.94.1" level="project" />
-    <orderEntry type="library" name="Maven: software.amazon.awscdk:logs:1.94.1" level="project" />
-    <orderEntry type="library" name="Maven: software.amazon.awscdk:signer:1.94.1" level="project" />
-    <orderEntry type="library" name="Maven: software.amazon.awscdk:sqs:1.94.1" level="project" />
-    <orderEntry type="library" name="Maven: software.amazon.awscdk:cdk-customresources:1.94.1" level="project" />
-    <orderEntry type="library" name="Maven: software.amazon.awscdk:cloudformation:1.94.1" level="project" />
-    <orderEntry type="library" name="Maven: software.amazon.awscdk:sns:1.94.1" level="project" />
-    <orderEntry type="library" name="Maven: software.amazon.awscdk:s3:1.94.1" level="project" />
     <orderEntry type="library" name="Maven: software.amazon.awscdk:events:1.94.1" level="project" />
     <orderEntry type="library" name="Maven: software.amazon.awscdk:kms:1.94.1" level="project" />
+    <orderEntry type="library" name="Maven: software.amazon.awscdk:logs:1.94.1" level="project" />
+    <orderEntry type="library" name="Maven: software.amazon.awscdk:signer:1.94.1" level="project" />
+    <orderEntry type="library" name="Maven: software.amazon.awscdk:cdk-customresources:1.94.1" level="project" />
+    <orderEntry type="library" name="Maven: software.amazon.awscdk:cloudformation:1.94.1" level="project" />
     <orderEntry type="library" name="Maven: software.amazon.awscdk:s3-deployment:1.94.1" level="project" />
     <orderEntry type="library" name="Maven: software.amazon.awscdk:cloudfront:1.94.1" level="project" />
+    <orderEntry type="library" name="Maven: software.amazon.awscdk:ssm:1.94.1" level="project" />
     <orderEntry type="library" name="Maven: software.amazon.awscdk:ec2:1.94.1" level="project" />
+    <orderEntry type="library" name="Maven: software.amazon.awscdk:s3:1.94.1" level="project" />
     <orderEntry type="library" name="Maven: software.amazon.awscdk:s3-assets:1.94.1" level="project" />
     <orderEntry type="library" name="Maven: software.amazon.awscdk:cdk-assets:1.94.1" level="project" />
     <orderEntry type="library" name="Maven: software.amazon.awscdk:cdk-lambda-layer-awscli:1.94.1" level="project" />
-    <orderEntry type="library" name="Maven: software.amazon.awscdk:ssm:1.94.1" level="project" />
+    <orderEntry type="library" name="Maven: software.amazon.awscdk:s3-notifications:1.94.1" level="project" />
+    <orderEntry type="library" name="Maven: software.amazon.awscdk:sns:1.94.1" level="project" />
+    <orderEntry type="library" name="Maven: software.amazon.awscdk:sqs:1.94.1" level="project" />
   </component>
 </module>

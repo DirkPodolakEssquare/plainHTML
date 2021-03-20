@@ -29,37 +29,10 @@
             <h1>Hello, <span id="username">world!</span></h1>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-6 offset-md-3">
-            <button class="btn btn-primary" type="button" id="register">Register</button>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6 offset-md-3">
-            <button class="btn btn-primary" type="button" id="login">Login</button>
-        </div>
-    </div>
 </main>
 
 <script crossorigin="anonymous" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="main.bundle.js"></script>
-<script>
-    init()
-
-    function init() {
-        document.getElementById("register").onclick = (event) => {
-            event.preventDefault()
-            console.log(event)
-            location.href = "registration.html"
-        }
-
-        document.getElementById("login").onclick = (event) => {
-            event.preventDefault()
-            console.log(event)
-            location.href = "login.html"
-        }
-    }
-</script>
 </body>
 </html>

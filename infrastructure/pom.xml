@@ -14,6 +14,7 @@
         <exec-maven.version>3.0.0</exec-maven.version>
 
         <cdk.version>1.94.1</cdk.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
@@ -27,19 +28,33 @@
             <artifactId>cognito</artifactId>
             <version>${cdk.version}</version>
         </dependency>
-        <dependency>
-            <groupId>software.amazon.awscdk</groupId>
-            <artifactId>s3</artifactId>
-            <version>${cdk.version}</version>
-        </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>software.amazon.awscdk</groupId>-->
+<!--            <artifactId>s3</artifactId>-->
+<!--            <version>${cdk.version}</version>-->
+<!--        </dependency>-->
+
         <dependency>
             <groupId>software.amazon.awscdk</groupId>
             <artifactId>s3-deployment</artifactId>
             <version>${cdk.version}</version>
         </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>software.amazon.awscdk</groupId>-->
+<!--            <artifactId>ssm</artifactId>-->
+<!--            <version>${cdk.version}</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>software.amazon.awscdk</groupId>-->
+<!--            <artifactId>lambda</artifactId>-->
+<!--            <version>${cdk.version}</version>-->
+<!--        </dependency>-->
+
         <dependency>
             <groupId>software.amazon.awscdk</groupId>
-            <artifactId>ssm</artifactId>
+            <artifactId>s3-notifications</artifactId>
             <version>${cdk.version}</version>
         </dependency>
     </dependencies>
