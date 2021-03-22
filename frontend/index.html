@@ -20,7 +20,9 @@
         <a class="p-2 text-dark" href="#">Support</a>
         <a class="p-2 text-dark" href="#">Pricing</a>
     </nav>
-    <a class="btn btn-outline-primary" href="#">Sign up</a>
+    <a class="btn btn-outline-primary" href="#" id="signup">Sign up</a>
+    <a class="btn btn-outline-primary" href="#" id="login">Login</a>
+    <a class="btn btn-outline-primary" href="#" id="logout">Logout</a>
 </header>
 
 <main class="container">
@@ -29,37 +31,41 @@
             <h1>Hello, <span id="username">world!</span></h1>
         </div>
     </div>
-    <div class="row">
+
+    <div class="row" id="authentication">
         <div class="col-md-6 offset-md-3">
-            <button class="btn btn-primary" type="button" id="register">Register</button>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6 offset-md-3">
-            <button class="btn btn-primary" type="button" id="login">Login</button>
+            <div class="card border-dark mb-3">
+                <div class="card-header" id="authenticationCardHeader">Registration</div>
+                <div class="card-body text-dark">
+                    <form id="authenticationForm">
+                        <div class="mb-3">
+                            <label class="form-label" for="userEmail">Email address</label>
+                            <input aria-describedby="emailHelp" class="form-control" id="userEmail" type="email">
+                            <div class="form-text" id="emailHelp">We'll never share your email with anyone else.</div>
+                        </div>
+                        <div class="mb-3" id="authenticationVerificationCode">
+                            <label class="form-label" for="verificationCode">Verification Code</label>
+                            <input class="form-control" id="verificationCode" type="text">
+                        </div>
+                        <div class="mb-3" id="authenticationPassword">
+                            <label class="form-label" for="userPassword">Password</label>
+                            <input class="form-control" id="userPassword" type="password">
+                        </div>
+                        <div class="mb-3" id="authenticationRepeatPassword">
+                            <label class="form-label" for="userPasswordRepetition">Repeat Password</label>
+                            <input class="form-control" id="userPasswordRepetition" type="password">
+                        </div>
+                        <button class="btn btn-primary" type="submit" id="authenticationSubmit">login now</button>
+                        <button class="btn btn-primary" type="submit" id="showVerificationCode">I have a verification code</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </main>
 
 <script crossorigin="anonymous" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="main.bundle.js"></script>
-<script>
-    init()
-
-    function init() {
-        document.getElementById("register").onclick = (event) => {
-            event.preventDefault()
-            console.log(event)
-            location.href = "registration.html"
-        }
-
-        document.getElementById("login").onclick = (event) => {
-            event.preventDefault()
-            console.log(event)
-            location.href = "login.html"
-        }
-    }
-</script>
+<script type="module" src="main.bundle.js"></script>
 </body>
 </html>

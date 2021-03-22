@@ -14,3 +14,19 @@ header a.brand {
     color: black;
     letter-spacing: 6px;
 }
+
+header a {
+    margin-left: 15px;
+}
+
+/* authentication */
+#login,
+#signup {
+    display: block;
+}
+
+#authentication,
+#logout,
+#authenticationVerificationCode {
+    display: none;
+}

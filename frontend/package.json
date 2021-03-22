@@ -1,7 +1,6 @@
 {
   "name": "driftbottle",
   "version": "1.0.0",
-  "main": "index.js",
   "author": "Dirk Podolak",
   "license": "MIT",
   "dependencies": {

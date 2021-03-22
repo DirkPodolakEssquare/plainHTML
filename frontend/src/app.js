@@ -1,164 +1,163 @@
-import { aws_config } from '../myconfig.js'
+import {aws_config} from '../myconfig.js'
 import '../css/driftbottle.css'
-import Amplify, { Auth } from 'aws-amplify'
+import Amplify from '@aws-amplify/core'
+import Auth from '@aws-amplify/auth'
 
 Amplify.configure(aws_config)
-
-const loginForm = document.getElementById("loginForm")
-if (loginForm) {
-  loginForm.onsubmit = async function loginFormSubmit(event) {
-    event.preventDefault()
-    const email = document.getElementById("userEmail").value
-    const password = document.getElementById("userPassword").value
-
-    try {
-      const user = await Auth.signIn(email, password)
-
-      console.log(user)
-
-      location.href = "index2.html"
-    } catch (e) {
-      console.error(e)
-    }
-  }
-}
-
-
-const registrationForm = document.getElementById("registrationForm")
-if (registrationForm) {
-  registrationForm.onsubmit = async function registrationFormSubmit(event) {
-    event.preventDefault()
-    const email = document.getElementById("userEmail").value
-    const password = document.getElementById("userPassword").value
-    const passwordRepetition = document.getElementById("userPasswordRepetition").value
-
-    if (password !== passwordRepetition) {
-      console.error("password and password repetition do not match")
-      return;
-    }
-
-    try {
-      const { user } = await Auth.signUp({
-        username: email,
-        password: password,
-        attributes: {
-          email: email
-        }
-      });
-      console.log(user);
-
-      location.href = "confirmRegistration.html"
-    } catch (error) {
-      console.log('error signing up:', error);
-    }
-  }
-}
-
-
-const verificationForm = document.getElementById("verificationForm")
-if (verificationForm) {
-  verificationForm.onsubmit = async function verificationFormSubmit(event) {
-    event.preventDefault()
-    const email = document.getElementById("userEmail").value
-    const verificationCode = document.getElementById("verificationCode").value
-
-    try {
-      const user = await Auth.confirmSignUp(email, verificationCode);
-      console.log(user);
-      location.href = "index2.html"
-    } catch (error) {
-      console.log('error signing up:', error);
-    }
-  }
-}
-
-
-
-
-
-
-
-const page = window.location.pathname.split("/").pop()
-
-console.log(page)
-
-if ("index2.html" === page) {
-  handleIndex2()
-}
-
-async function handleIndex2() {
-  try {
-    const user = await Auth.currentAuthenticatedUser({bypassCache: true})
-    console.log(user)
-    console.log(`user ${user.attributes.email} is logged in`)
-
-    document.getElementById("username").textContent = user.attributes.email
-  } catch (e) {
-    console.log("no user logged in")
-  }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Auth.configure(aws_config)
 
 // ------------------------------------------------------------------------------------------
-const test = async () => {
-  console.log("init")
+// authentication
+// ------------------------------------------------------------------------------------------
 
-  console.log(document.getElementById("username"))
+initAuthentication()
 
+async function initAuthentication() {
+  if (await userIsLoggedIn()) {
+    console.log("logged in")
+    console.log(await getUser())
 
-  try {
-    const user = await Auth.currentAuthenticatedUser({bypassCache: true})
-    console.log(user)
-    console.log(`user ${user.attributes.email} is logged in`)
+    document.getElementById("login").style.display = "none"
+    document.getElementById("signup").style.display = "none"
+    document.getElementById("logout").style.display = "block"
+    document.getElementById("authentication").style.display = "none"
+    document.getElementById("username").textContent = (await getUser()).attributes.email
 
-    document.getElementById("username").textContent = user.attributes.email
-  } catch (e) {
-    console.log("no user logged in")
+    registerLogoutHandler()
+  } else {
+    console.log("not logged in")
 
-    const TEMP_PASSWORD = "password1234"
-    const NEW_PASSWORD = "password1234"
+    document.getElementById("login").style.display = "block"
+    document.getElementById("signup").style.display = "block"
+    document.getElementById("logout").style.display = "none"
 
-    const user = await Auth.signIn("dirk.podolak.essquare@gmail.com", TEMP_PASSWORD)
-    if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
-      await Auth.completeNewPassword(user, NEW_PASSWORD)
-    }
+    registerLoginHandler()
+    registerSignupHandler()
+    registerVerificationCodeHandler()
   }
 }
 
-// ------------------------------------------------------------------------------------------
-
-
-
-async function signUp() {
+async function getUser() {
   try {
-    const { user } = await Auth.signUp({
-      username,
-      password,
-      attributes: {
-        email,          // optional
-        phone_number,   // optional - E.164 number convention
-        // other custom attributes
+    return await Auth.currentAuthenticatedUser({bypassCache: true})
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+async function userIsLoggedIn() {
+  try {
+    const user = await getUser()
+    return !!user
+  } catch (e) {
+    return false
+  }
+}
+
+function registerLogoutHandler() {
+  document.getElementById("logout").onclick = async function (event) {
+    event.preventDefault()
+
+    await Auth.signOut()
+
+    location.reload()
+  }
+}
+
+function registerLoginHandler() {
+  document.getElementById("login").onclick = async function (event) {
+    event.preventDefault()
+
+    document.getElementById("authenticationForm").onsubmit = async function loginFormSubmit(event) {
+      event.preventDefault()
+
+      const email = document.getElementById("userEmail").value
+      const password = document.getElementById("userPassword").value
+
+      try {
+        await Auth.signIn(email, password)
+        location.reload()
+      } catch (e) {
+        console.error(e)
       }
-    });
-    console.log(user);
-  } catch (error) {
-    console.log('error signing up:', error);
+    }
+
+    document.getElementById("authenticationCardHeader").innerText = "Login"
+    document.getElementById("authenticationPassword").style.display = "block"
+    document.getElementById("authenticationRepeatPassword").style.display = "none"
+    document.getElementById("authenticationVerificationCode").style.display = "none"
+    document.getElementById("authenticationSubmit").textContent = "login now"
+    document.getElementById("showVerificationCode").style.display = "block"
+    document.getElementById("authentication").style.display = "block"
   }
 }
 
+function registerSignupHandler() {
+  document.getElementById("signup").onclick = async function (event) {
+    event.preventDefault()
 
-//    "webpack": "^4.17.1",
+    document.getElementById("authenticationForm").onsubmit = async function registrationFormSubmit(event) {
+      event.preventDefault()
+
+      const email = document.getElementById("userEmail").value
+      const password = document.getElementById("userPassword").value
+      const passwordRepetition = document.getElementById("userPasswordRepetition").value
+
+      if (password !== passwordRepetition) {
+        console.error("password and password repetition do not match")
+        return
+      }
+
+      try {
+        await Auth.signUp({
+          username: email,
+          password: password,
+          attributes: {
+            email: email
+          }
+        })
+
+        //location.href = "confirmRegistration.html"
+        location.reload()
+      } catch (error) {
+        console.log('error signing up:', error)
+      }
+    }
+
+    document.getElementById("authenticationCardHeader").innerText = "Registration"
+    document.getElementById("authenticationPassword").style.display = "block"
+    document.getElementById("authenticationRepeatPassword").style.display = "block"
+    document.getElementById("authenticationVerificationCode").style.display = "none"
+    document.getElementById("authenticationSubmit").textContent = "register now"
+    document.getElementById("showVerificationCode").style.display = "block"
+    document.getElementById("authentication").style.display = "block"
+  }
+}
+
+function registerVerificationCodeHandler() {
+  document.getElementById("showVerificationCode").onclick = async function (event) {
+    event.preventDefault()
+
+    document.getElementById("authenticationForm").onsubmit = async function registrationFormSubmit(event) {
+      event.preventDefault()
+
+      const email = document.getElementById("userEmail").value
+      const verificationCode = document.getElementById("verificationCode").value
+
+      await Auth.confirmSignUp(email, verificationCode);
+      location.reload()
+    }
+
+    document.getElementById("authenticationCardHeader").innerText = "Verification"
+    document.getElementById("authenticationPassword").style.display = "none"
+    document.getElementById("authenticationRepeatPassword").style.display = "none"
+    document.getElementById("authenticationVerificationCode").style.display = "block"
+    document.getElementById("showVerificationCode").style.display = "none"
+    document.getElementById("authenticationSubmit").textContent = "submit verification code"
+    document.getElementById("authentication").style.display = "block"
+  }
+}
+
+// ------------------------------------------------------------------------------------------
+// /authentication
+// ------------------------------------------------------------------------------------------

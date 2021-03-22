@@ -12,6 +12,7 @@ import software.amazon.awscdk.services.cognito.AutoVerifiedAttrs;
 import software.amazon.awscdk.services.cognito.CfnUserPool;
 import software.amazon.awscdk.services.cognito.CfnUserPool.AccountRecoverySettingProperty;
 import software.amazon.awscdk.services.cognito.CfnUserPool.RecoveryOptionProperty;
+import software.amazon.awscdk.services.cognito.CognitoDomainOptions;
 import software.amazon.awscdk.services.cognito.IUserPool;
 import software.amazon.awscdk.services.cognito.IUserPoolClient;
 import software.amazon.awscdk.services.cognito.Mfa;
@@ -22,7 +23,10 @@ import software.amazon.awscdk.services.cognito.StandardAttributes;
 import software.amazon.awscdk.services.cognito.UserPool;
 import software.amazon.awscdk.services.cognito.UserPoolClient;
 import software.amazon.awscdk.services.cognito.UserPoolClientProps;
+import software.amazon.awscdk.services.cognito.UserPoolDomainOptions;
 import software.amazon.awscdk.services.cognito.UserPoolProps;
+import software.amazon.awscdk.services.cognito.UserVerificationConfig;
+import software.amazon.awscdk.services.cognito.VerificationEmailStyle;
 import software.amazon.awscdk.services.ssm.StringParameter;
 import software.amazon.awscdk.services.ssm.StringParameterProps;
 
@@ -34,6 +38,8 @@ public class DriftbottleCognitoStack extends Stack {
     public static final String USERPOOL_CLIENT_ID = "DriftbottleUserpoolClientId";
     public static final String SSM_PARAMETER_POSTFIX = "SSMParameter";
     public static final String OUTPUT_PARAMETER_POSTFIX = "OutputParameter";
+    public static final String DOMAIN_ID = "DriftbottleDomainId";
+    public static final String DOMAIN_PREFIX = "driftbottle";
 
     private IUserPool userPool;
     private IUserPoolClient userPoolClient;
@@ -55,6 +61,18 @@ public class DriftbottleCognitoStack extends Stack {
 
     private void createUserPool() {
         // create userpool
+
+//        userVerification: {
+//            emailSubject: 'Verify your email for our awesome app!',
+//                    emailBody: 'Hello {username}, Thanks for signing up to our awesome app! Your verification code is {####}',
+//                    emailStyle: cognito.VerificationEmailStyle.CODE,
+//                    smsMessage: 'Hello {username}, Thanks for signing up to our awesome app! Your verification code is {####}',
+//        }
+
+//        UserVerificationConfig userVerificationConfig = UserVerificationConfig.builder()
+//                                                                              .emailBody("")
+//                                                                              .emailStyle(VerificationEmailStyle.LINK)
+//                                                                              .build();
         UserPoolProps userPoolProps = UserPoolProps.builder()
                                                    .userPoolName(USERPOOL_NAME)
                                                    .signInAliases(SignInAliases.builder()
@@ -79,12 +97,21 @@ public class DriftbottleCognitoStack extends Stack {
                                                                                 .build())
                                                    .mfa(Mfa.OFF)
                                                    .selfSignUpEnabled(true)
+//                                                   .userVerification(userVerificationConfig)
                                                    .build();
 
         userPool = new UserPool(this, USERPOOL_ID, userPoolProps);
         CfnUserPool cfnUserPool = (CfnUserPool) userPool.getNode()
                                                         .getDefaultChild();
         assert cfnUserPool != null;
+
+//        CognitoDomainOptions cognitoDomainOptions = CognitoDomainOptions.builder()
+//                                                                        .domainPrefix(DOMAIN_PREFIX)
+//                                                                        .build();
+//        UserPoolDomainOptions userPoolDomainOptions = UserPoolDomainOptions.builder()
+//                                                                           .cognitoDomain(cognitoDomainOptions)
+//                                                                           .build();
+//        userPool.addDomain(DOMAIN_ID, userPoolDomainOptions);
 
         cfnUserPool.setAccountRecoverySetting(AccountRecoverySettingProperty.builder()
                                                                             .recoveryMechanisms(
