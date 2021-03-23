@@ -40,7 +40,7 @@ module.exports = {
         test: /\.js$/i,
         enforce: 'pre',
         use: ['source-map-loader'],
-        exclude: [path.resolve(__dirname, "myconfig.js")]
+        exclude: [path.resolve(__dirname, "configTemplate.js"),path.resolve(__dirname, "myConfig.bak.js")]
       }, {
         test: /\.js$/i,
         exclude: /node_modules/

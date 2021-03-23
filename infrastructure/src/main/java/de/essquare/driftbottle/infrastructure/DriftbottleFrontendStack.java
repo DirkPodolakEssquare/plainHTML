@@ -15,7 +15,7 @@ import software.amazon.awscdk.services.s3.deployment.Source;
 import software.amazon.awscdk.services.ssm.StringParameter;
 import software.amazon.awscdk.services.ssm.StringParameterProps;
 
-public class DriftbottleS3Stack extends Stack {
+public class DriftbottleFrontendStack extends Stack {
 
     // TODO check this out: https://github.com/aws-samples/aws-cdk-examples/blob/master/java/static-site/src/main/java/software/amazon/awscdk/examples/StaticSiteStack.java
 
@@ -28,12 +28,12 @@ public class DriftbottleS3Stack extends Stack {
 
     private Bucket frontendBucket;
 
-    public DriftbottleS3Stack(Construct scope,
-                              String id,
-                              StackProps props,
-                              String userpoolId,
-                              String userpoolClientId,
-                              String region) {
+    public DriftbottleFrontendStack(Construct scope,
+                                    String id,
+                                    StackProps props,
+                                    String userpoolId,
+                                    String userpoolClientId,
+                                    String region) {
         super(scope, id, props);
 
         createBucket();

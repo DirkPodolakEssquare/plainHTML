@@ -7,8 +7,8 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/target" />
       <excludeFolder url="file://$MODULE_DIR$/cdk.out" />
+      <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -17,7 +17,7 @@
     <orderEntry type="library" name="Maven: software.amazon.awscdk:cdk-cx-api:1.94.1" level="project" />
     <orderEntry type="library" name="Maven: software.amazon.awscdk:cdk-region-info:1.94.1" level="project" />
     <orderEntry type="library" name="Maven: software.constructs:constructs:3.3.68" level="project" />
-    <orderEntry type="library" name="Maven: software.amazon.jsii:jsii-runtime:1.25.0" level="project" />
+    <orderEntry type="library" name="Maven: software.amazon.jsii:jsii-runtime:1.26.0" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.11.4" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.11.4" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.11.4" level="project" />
@@ -38,7 +38,6 @@
     <orderEntry type="library" name="Maven: software.amazon.awscdk:ecr-assets:1.94.1" level="project" />
     <orderEntry type="library" name="Maven: software.amazon.awscdk:efs:1.94.1" level="project" />
     <orderEntry type="library" name="Maven: software.amazon.awscdk:events:1.94.1" level="project" />
-    <orderEntry type="library" name="Maven: software.amazon.awscdk:kms:1.94.1" level="project" />
     <orderEntry type="library" name="Maven: software.amazon.awscdk:logs:1.94.1" level="project" />
     <orderEntry type="library" name="Maven: software.amazon.awscdk:signer:1.94.1" level="project" />
     <orderEntry type="library" name="Maven: software.amazon.awscdk:cdk-customresources:1.94.1" level="project" />
@@ -48,11 +47,13 @@
     <orderEntry type="library" name="Maven: software.amazon.awscdk:ssm:1.94.1" level="project" />
     <orderEntry type="library" name="Maven: software.amazon.awscdk:ec2:1.94.1" level="project" />
     <orderEntry type="library" name="Maven: software.amazon.awscdk:s3:1.94.1" level="project" />
-    <orderEntry type="library" name="Maven: software.amazon.awscdk:s3-assets:1.94.1" level="project" />
-    <orderEntry type="library" name="Maven: software.amazon.awscdk:cdk-assets:1.94.1" level="project" />
     <orderEntry type="library" name="Maven: software.amazon.awscdk:cdk-lambda-layer-awscli:1.94.1" level="project" />
     <orderEntry type="library" name="Maven: software.amazon.awscdk:s3-notifications:1.94.1" level="project" />
     <orderEntry type="library" name="Maven: software.amazon.awscdk:sns:1.94.1" level="project" />
     <orderEntry type="library" name="Maven: software.amazon.awscdk:sqs:1.94.1" level="project" />
+    <orderEntry type="library" name="Maven: software.amazon.awscdk:elasticbeanstalk:1.94.1" level="project" />
+    <orderEntry type="library" name="Maven: software.amazon.awscdk:s3-assets:1.94.1" level="project" />
+    <orderEntry type="library" name="Maven: software.amazon.awscdk:cdk-assets:1.94.1" level="project" />
+    <orderEntry type="library" name="Maven: software.amazon.awscdk:kms:1.94.1" level="project" />
   </component>
 </module>

@@ -1,10 +1,28 @@
-// <editor-fold desc="TEMPLATE :: grant access to group">
-        //        Bucket rawData = new Bucket(this, "raw-data");
-        //        Group dataScience = new Group(this, "data-science");
-        //        rawData.grantRead(dataScience);
-        // </editor-fold>
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        // <editor-fold desc="TEMPLATE :: create queue and register it's URL in a lambda">
+Maybe it's better to remove the lambda and the FrontendConfigCreator, deploy all stacks separately and take the output of the CognitoStack and pass it as a context variable into
+the FrontendStack within the deploy.sh script.
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Here (https://docs.spring.io/spring-boot/docs/current/reference/html/deployment.html#cloud-deployment-aws) the Spring docs says it is better to deploy binaries
+to Elastic Beanstalk instead of uploading sourcecode and compiling it in the cloud.
+
+Put this into .elasticbeanstalk/config.yml:
+
+deploy:
+artifact: target/appName-0.0.1-SNAPSHOT.jar
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+examples
+// <editor-fold desc="TEMPLATE :: grant access to group">
+//        Bucket rawData = new Bucket(this, "raw-data");
+//        Group dataScience = new Group(this, "data-science");
+//        rawData.grantRead(dataScience);
+// </editor-fold>
+
+// <editor-fold desc="TEMPLATE :: create queue and register it's URL in a lambda">
 //        final Queue jobsQueue = new Queue(this, "jobs");
 //        Function createJobLambda = Function.Builder.create(this, "create-job")
 //                                                   .handler("index.handler")
@@ -12,17 +30,19 @@
 //                                                   .environment(new HashMap<String, String>() {{
 //                                                       put("QUEUE_URL", jobsQueue.getQueueUrl());
 //                                                   }}).build();
-        // </editor-fold>
+// </editor-fold>
 
-        // <editor-fold desc="TEMPLATE :: create bucket that notifies sns topic">
+// <editor-fold desc="TEMPLATE :: create bucket that notifies sns topic">
 //        Bucket bucket = new Bucket(this, "bucket");
 //        Topic topic = new Topic(this, "topic");
 //        if (prefix != null)
 //            bucket.addObjectCreatedNotification(new SnsDestination(topic),
 //                                                NotificationKeyFilter.builder().prefix(prefix).build());
-        // </editor-fold>
+// </editor-fold>
 
-        // <editor-fold desc="TEMPLATE :: add sqs listener to sns topic">
+// <editor-fold desc="TEMPLATE :: add sqs listener to sns topic">
 //        NotifyingBucket images = new NotifyingBucket(this, "MyNotifyingBucket", "/images");
 //        images.topic.addSubscription(new SqsSubscription(queue));
-        // </editor-fold>
+// </editor-fold>
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

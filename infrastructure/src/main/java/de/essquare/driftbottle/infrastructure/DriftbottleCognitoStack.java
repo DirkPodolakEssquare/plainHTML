@@ -49,6 +49,11 @@ public class DriftbottleCognitoStack extends Stack {
 
         createUserPool();
         createUserPoolClient();
+
+        CfnOutputProps cfnOutputProps = CfnOutputProps.builder()
+                                                      .value(props.getEnv().getRegion())
+                                                      .build();
+        new CfnOutput(this, "DriftbottleRegion" + DriftbottleCognitoStack.OUTPUT_PARAMETER_POSTFIX, cfnOutputProps);
     }
 
     public IUserPool getUserPool() {

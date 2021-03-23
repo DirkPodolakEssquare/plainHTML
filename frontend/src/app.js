@@ -1,4 +1,4 @@
-import {aws_config} from '../myconfig.js'
+import {aws_config} from '../myConfig.js'
 import '../css/driftbottle.css'
 import Amplify from '@aws-amplify/core'
 import Auth from '@aws-amplify/auth'

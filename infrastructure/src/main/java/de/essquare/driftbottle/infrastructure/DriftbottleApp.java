@@ -3,6 +3,8 @@ package de.essquare.driftbottle.infrastructure;
 import java.io.IOException;
 
 import software.amazon.awscdk.core.App;
+import software.amazon.awscdk.core.CfnOutput;
+import software.amazon.awscdk.core.CfnOutputProps;
 import software.amazon.awscdk.core.Environment;
 import software.amazon.awscdk.core.StackProps;
 
@@ -18,20 +20,24 @@ public class DriftbottleApp {
     public static void main(final String[] args) throws IOException {
         App app = new App();
 
+        StackProps stackProps = StackProps.builder()
+                                     .env(ESSQUARE_ENVIRONMENT)
+                                     .build();
+
         DriftbottleCognitoStack driftbottleCognitoStack = new DriftbottleCognitoStack(app,
                                                                                       "DriftbottleCognitoStack",
-                                                                                      StackProps.builder()
-                                                                                                .env(ESSQUARE_ENVIRONMENT)
-                                                                                                .build());
+                                                                                      stackProps);
 
-        new DriftbottleS3Stack(app,
-                               "DriftbottleFrontendS3Stack",
-                               StackProps.builder()
-                                         .env(ESSQUARE_ENVIRONMENT)
-                                         .build(),
-                               driftbottleCognitoStack.getUserPool().getUserPoolId(),
-                               driftbottleCognitoStack.getUserPoolClient().getUserPoolClientId(),
-                               ESSQUARE_REGION);
+        DriftbottleBackendStack driftbottleBackendStack = new DriftbottleBackendStack(app,
+                                                                                      "DriftbottleBackendStack",
+                                                                                      stackProps);
+
+        new DriftbottleFrontendStack(app,
+                                     "DriftbottleFrontendStack",
+                                     stackProps,
+                                     driftbottleCognitoStack.getUserPool().getUserPoolId(),
+                                     driftbottleCognitoStack.getUserPoolClient().getUserPoolClientId(),
+                                     ESSQUARE_REGION);
 
         app.synth();
     }

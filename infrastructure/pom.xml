@@ -7,6 +7,7 @@
     <groupId>de.essquare.driftbottle</groupId>
     <artifactId>infrastructure</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <name>infrastructure</name>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -28,33 +29,24 @@
             <artifactId>cognito</artifactId>
             <version>${cdk.version}</version>
         </dependency>
-
-<!--        <dependency>-->
-<!--            <groupId>software.amazon.awscdk</groupId>-->
-<!--            <artifactId>s3</artifactId>-->
-<!--            <version>${cdk.version}</version>-->
-<!--        </dependency>-->
-
         <dependency>
             <groupId>software.amazon.awscdk</groupId>
             <artifactId>s3-deployment</artifactId>
             <version>${cdk.version}</version>
         </dependency>
-
-<!--        <dependency>-->
-<!--            <groupId>software.amazon.awscdk</groupId>-->
-<!--            <artifactId>ssm</artifactId>-->
-<!--            <version>${cdk.version}</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>software.amazon.awscdk</groupId>-->
-<!--            <artifactId>lambda</artifactId>-->
-<!--            <version>${cdk.version}</version>-->
-<!--        </dependency>-->
-
         <dependency>
             <groupId>software.amazon.awscdk</groupId>
             <artifactId>s3-notifications</artifactId>
+            <version>${cdk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>software.amazon.awscdk</groupId>
+            <artifactId>elasticbeanstalk</artifactId>
+            <version>${cdk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>software.amazon.awscdk</groupId>
+            <artifactId>s3-assets</artifactId>
             <version>${cdk.version}</version>
         </dependency>
     </dependencies>
