@@ -25,15 +25,9 @@
     <a class="btn btn-outline-primary" href="#" id="logout">Logout</a>
 </header>
 
-<main class="container">
+<div class="container" id="authentication">
     <div class="row">
-        <div class="col-md-6 offset-md-3">
-            <h1>Hello, <span id="username">world!</span></h1>
-        </div>
-    </div>
-
-    <div class="row" id="authentication">
-        <div class="col-md-6 offset-md-3">
+        <div class="col-sm-6 offset-sm-3">
             <div class="card border-dark mb-3">
                 <div class="card-header" id="authenticationCardHeader">Registration</div>
                 <div class="card-body text-dark">
@@ -55,17 +49,107 @@
                             <label class="form-label" for="userPasswordRepetition">Repeat Password</label>
                             <input class="form-control" id="userPasswordRepetition" type="password">
                         </div>
-                        <button class="btn btn-primary" type="submit" id="authenticationSubmit">login now</button>
-                        <button class="btn btn-primary" type="submit" id="showVerificationCode">I have a verification code</button>
+                        <button class="btn btn-primary" id="authenticationSubmit" type="submit">login now</button>
+                        <button class="btn btn-primary" id="showVerificationCode" type="submit">I have a verification code</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-</main>
+</div>
+
+<div class="container" id="inbox">
+    <div class="row">
+        <div class="col-sm-6 allConversations">
+            <div class="card mb-3">
+                <div class="row g-0">
+                    <div class="col-md-3 avatar">
+                        <img alt="avatar" class="img-fluid" src="images/Portrait_Placeholder.png"/>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="card-body">
+                            <h5 class="card-title">b5329a49-bc58-4697-82f9-982273f983e9</h5>
+                            <p class="card-text">Hello buddy. I'm a mountain hiker and want to share my passion with you. Would you like to do a five day trail in the
+                                ...</p>
+                            <p class="card-text"><small class="text-muted">Yesterday</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="row g-0">
+                    <div class="col-md-3 avatar">
+                        <img alt="avatar" class="img-fluid" src="images/Portrait_Placeholder.png"/>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="card-body">
+                            <h5 class="card-title">b5329a49-bc58-4697-82f9-982273f983e9</h5>
+                            <p class="card-text">Hello buddy. I'm a mountain hiker and want to share my passion with you. Would you like to do a five day trail in the
+                                ...</p>
+                            <p class="card-text"><small class="text-muted">Yesterday</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="row g-0">
+                    <div class="col-md-3 avatar">
+                        <img alt="avatar" class="img-fluid" src="images/Portrait_Placeholder.png"/>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="card-body">
+                            <h5 class="card-title">b5329a49-bc58-4697-82f9-982273f983e9</h5>
+                            <p class="card-text">Hello buddy. I'm a mountain hiker and want to share my passion with you. Would you like to do a five day trail in the
+                                ...</p>
+                            <p class="card-text"><small class="text-muted">Yesterday</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="row g-0">
+                    <div class="col-md-3 avatar">
+                        <img alt="avatar" class="img-fluid" src="images/Portrait_Placeholder.png"/>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="card-body">
+                            <h5 class="card-title">b5329a49-bc58-4697-82f9-982273f983e9</h5>
+                            <p class="card-text">Hello buddy. I'm a mountain hiker and want to share my passion with you. Would you like to do a five day trail in the
+                                ...</p>
+                            <p class="card-text"><small class="text-muted">Yesterday</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p>Hallo 1</p>
+            <p>Hallo 2</p>
+            <p>Hallo 3</p>
+            <p>Hallo 4</p>
+            <p>Hallo 5</p>
+            <p>Hallo 6</p>
+            <p>Hallo 7</p>
+            <p>Hallo 8</p>
+            <p>Hallo 9</p>
+            <p>Hallo 0</p>
+            <p>Hallo 1</p>
+            <p>Hallo 2</p>
+            <p>Hallo 3</p>
+            <p>Hallo 4</p>
+            <p>Hallo 5</p>
+            <p>Hallo 6</p>
+            <p>Hallo 7</p>
+            <p>Hallo 8</p>
+            <p>Hallo 9</p>
+            <p>Hallo 0</p>
+        </div>
+        <div class="col-sm-6 singleConversation">
+            Hi
+        </div>
+    </div>
+</div>
 
 <script crossorigin="anonymous" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"></script>
-<script type="module" src="main.bundle.js"></script>
+<script src="main.bundle.js" type="module"></script>
 </body>
 </html>

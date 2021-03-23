@@ -67,7 +67,7 @@ module.exports = {
     //   }
     // }),
     new CopyWebpackPlugin({
-      patterns: ['*.html']
+      patterns: ['*.html', 'images/*.png']
     }),
     // new webpack.HotModuleReplacementPlugin(),
     new MiniCssExtractPlugin({

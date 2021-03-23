@@ -19,17 +19,18 @@ async function initAuthentication() {
 
     document.getElementById("login").style.display = "none"
     document.getElementById("signup").style.display = "none"
-    document.getElementById("logout").style.display = "block"
+    document.getElementById("logout").style.display = "flex"
     document.getElementById("authentication").style.display = "none"
-    document.getElementById("username").textContent = (await getUser()).attributes.email
+    document.getElementById("inbox").style.display = "flex"
 
     registerLogoutHandler()
   } else {
     console.log("not logged in")
 
-    document.getElementById("login").style.display = "block"
-    document.getElementById("signup").style.display = "block"
+    document.getElementById("login").style.display = "flex"
+    document.getElementById("signup").style.display = "flex"
     document.getElementById("logout").style.display = "none"
+    document.getElementById("inbox").style.display = "none"
 
     registerLoginHandler()
     registerSignupHandler()
@@ -58,7 +59,13 @@ function registerLogoutHandler() {
   document.getElementById("logout").onclick = async function (event) {
     event.preventDefault()
 
-    await Auth.signOut()
+    console.log("logout...")
+    try {
+      await Auth.signOut()
+    } catch (e) {
+      console.error(e)
+    }
+    console.log("...logged out")
 
     location.reload()
   }

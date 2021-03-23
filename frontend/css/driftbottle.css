@@ -1,3 +1,8 @@
+body {
+    background-color: #e2e2e2;
+    height: 100vh;
+}
+
 .container {
     margin-top: 30px;
 }
@@ -19,14 +24,51 @@ header a {
     margin-left: 15px;
 }
 
-/* authentication */
 #login,
-#signup {
-    display: block;
-}
-
+#signup,
 #authentication,
 #logout,
-#authenticationVerificationCode {
+#authenticationVerificationCode,
+#inbox {
     display: none;
+}
+
+/* inbox */
+#inbox {
+    margin-bottom: 200px;
+    height: 80%;
+}
+
+#inbox:after {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 300px;
+    content: "";
+    background-color: #e0ca9a;
+}
+
+#inbox > .row {
+    height: 100%;
+}
+
+#inbox .allConversations {
+    padding-top: 10px;
+    background-color: #ffffff;
+    overflow: auto;
+    height: 100%;
+}
+
+.avatar {
+    padding: 20px;
+}
+
+#inbox .singleConversation {
+    background-color: #bababa;
+}
+
+#authentication {
+
 }
