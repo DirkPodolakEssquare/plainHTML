@@ -4,8 +4,8 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = {
-  mode: 'development',
-  // mode: 'production',
+  // mode: 'development',
+  mode: 'production',
   devtool: 'source-map',
   entry: './src/app.js',
 
@@ -30,10 +30,10 @@ module.exports = {
 
 
 
-  // optimization: {
-  //   usedExports: true,
-  //   minimize: true
-  // },
+  optimization: {
+    usedExports: true,
+    minimize: true
+  },
   module: {
     rules: [
       {
@@ -60,12 +60,12 @@ module.exports = {
     hot: true
   },
   plugins: [
-    // new webpack.optimize.OccurrenceOrderPlugin(),
-    // new webpack.DefinePlugin({
-    //   'process.env': {
-    //     'NODE_ENV': JSON.stringify('production')
-    //   }
-    // }),
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production')
+      }
+    }),
     new CopyWebpackPlugin({
       patterns: ['*.html', 'images/*.png']
     }),

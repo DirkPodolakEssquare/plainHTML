@@ -21,7 +21,6 @@ public class DriftbottleFrontendStack extends Stack {
 
     public static final String FRONTEND_BUCKET_ID = "DriftbottleFrontendBucketId";
     public static final String FRONTEND_BUCKET_NAME = "DriftbottleFrontendBucketName";
-    public static final String FRONTEND_CONFIG_CREATOR_ID = "DriftbottleFrontendConfigCreator";
     public static final String FRONTEND_BUCKET_DEPLOYMENT_ID = "DriftbottleFrontendBucketDeploymentId";
     public static final String SSM_PARAMETER_POSTFIX = "SSMParameter";
     public static final String OUTPUT_PARAMETER_POSTFIX = "OutputParameter";
@@ -64,21 +63,7 @@ public class DriftbottleFrontendStack extends Stack {
     }
 
     private void putFrontendCodeToBucket(String userpoolId, String userpoolClientId, String region) {
-        // create frontend configuration, needs to be declared before creating the BucketDeployment, because that is the
-        // trigger of the FrontendConfigCreator's lambda
-        FrontendConfigCreatorProps frontendConfigCreatorProps = FrontendConfigCreatorProps.builder()
-                                                                                          .bucket(frontendBucket)
-                                                                                          .userpoolId(userpoolId)
-                                                                                          .userpoolClientId(userpoolClientId)
-                                                                                          .region(region)
-                                                                                          .build();
-        new FrontendConfigCreator(this, FRONTEND_CONFIG_CREATOR_ID, frontendConfigCreatorProps);
-
-        // deploy frontend sourcecode from dist folder to the S3 bucket, this (OBJECT_CREATE) will trigger the aforementioned
-        // creation of the configuration
-        // TODO: the config will not get created if nothing changed (= no object is created), is this okay or do we need to do more here?
-        //       at the moment this is okay as the userpool gets created once, when there is no S3 bucket (and therefore no files in it),
-        //       and the config will be written during the initial copying of the frontend code
+        // deploy frontend sourcecode from dist folder to the S3 bucket
         BucketDeploymentProps bucketDeploymentProps = BucketDeploymentProps.builder()
                                                                            .destinationBucket(frontendBucket)
                                                                            .sources(List.of(Source.asset("../frontend/dist")))

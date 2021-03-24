@@ -124,7 +124,6 @@ function registerSignupHandler() {
           }
         })
 
-        //location.href = "confirmRegistration.html"
         location.reload()
       } catch (error) {
         console.log('error signing up:', error)
