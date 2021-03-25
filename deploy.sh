@@ -13,7 +13,13 @@ cd ..
 
 # build backend
 cd backend
-mvn package
+
+# to deploy a jar file
+#mvn package
+
+# to deploy the complete project as a zip file
+zip ./target/backend.zip -r * .[^.]* -x .idea/\* target/\* .git/\* .gitignore \*.iml
+
 cd ..
 
 # build frontend

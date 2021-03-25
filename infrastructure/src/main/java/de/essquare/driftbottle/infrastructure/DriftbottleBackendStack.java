@@ -23,9 +23,10 @@ public class DriftbottleBackendStack extends Stack {
     public DriftbottleBackendStack(final Construct scope, final String id, final StackProps props) {
         super(scope, id, props);
 
-        // Construct an S3 asset from the ZIP located from directory up.
+        // Construct an S3 asset from the JAR/ZIP located from directory up.
         AssetProps assetProps = AssetProps.builder()
-                                          .path("../backend/target/backend-1.0-SNAPSHOT.jar")
+//                                          .path("../backend/target/backend-1.0-SNAPSHOT.jar") // when deploying jar
+                                          .path("../backend/target/backend.zip") // when deploying zip
                                           .build();
         Asset asset = new Asset(this, "DriftbottleBackendJar", assetProps);
 
