@@ -66,6 +66,7 @@ local-setup/activity-stream-handler*
 *.sln
 *.sw?
 package-lock.json
+*.iml
 
 
 **/cdk.out/*

@@ -16,11 +16,6 @@
     <version>1.0-SNAPSHOT</version>
     <name>backend</name>
 
-<!--    <properties>-->
-<!--        <maven.compiler.source>11</maven.compiler.source>-->
-<!--        <maven.compiler.target>11</maven.compiler.target>-->
-<!--    </properties>-->
-
     <properties>
         <java.version>11</java.version>
         <aws-sdk.version>1.11.880</aws-sdk.version>
