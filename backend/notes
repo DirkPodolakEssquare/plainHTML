@@ -1,0 +1,1 @@
+eb create DriftbottleEnvironment -k dirk_essquare_1 -c driftbottle -d --profile essquare -r eu-central-1 -v

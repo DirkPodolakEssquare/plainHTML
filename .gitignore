@@ -71,5 +71,3 @@ package-lock.json
 
 **/cdk.out/*
 **/target/*
-**/dist/*
-**/node_modules/*
