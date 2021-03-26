@@ -23,10 +23,9 @@ public class DriftbottleBackendStack extends Stack {
     public DriftbottleBackendStack(final Construct scope, final String id, final StackProps props) {
         super(scope, id, props);
 
-        // Construct an S3 asset from the JAR/ZIP located from directory up.
+        // Construct an S3 asset from the ZIP located in the target folder.
         AssetProps assetProps = AssetProps.builder()
-//                                          .path("../backend/target/backend-1.0-SNAPSHOT.jar") // when deploying jar
-                                          .path("../backend/target/backend.zip") // when deploying zip
+                                          .path("../backend/target/backend.zip")
                                           .build();
         Asset asset = new Asset(this, "DriftbottleBackendJar", assetProps);
 
@@ -40,7 +39,7 @@ public class DriftbottleBackendStack extends Stack {
         CfnEnvironment.OptionSettingProperty instanceTypeOptionSettingProperty = CfnEnvironment.OptionSettingProperty.builder()
                                                                                                                      .namespace("aws:autoscaling:launchconfiguration")
                                                                                                                      .optionName("InstanceType")
-                                                                                                                     .value("t3.small")
+                                                                                                                     .value("t2.micro")
                                                                                                                      .build();
         CfnEnvironment.OptionSettingProperty iamInstanceProfileOptionSettingProperty = CfnEnvironment.OptionSettingProperty.builder()
                                                                                                                            .namespace("aws:autoscaling:launchconfiguration")
@@ -48,7 +47,7 @@ public class DriftbottleBackendStack extends Stack {
                                                                                                                            .value("aws-elasticbeanstalk-ec2-role")
                                                                                                                            .build();
         // Create an app version from the S3 asset defined above
-        // The S3 "putObject" will occur first before CF generates the template
+        // The S3 "putObject" will occur first before CFN generates the template
         CfnApplicationVersion.SourceBundleProperty sourceBundleProperty = CfnApplicationVersion.SourceBundleProperty.builder()
                                                                                                                     .s3Bucket(asset.getS3BucketName())
                                                                                                                     .s3Key(asset.getS3ObjectKey())
@@ -65,6 +64,7 @@ public class DriftbottleBackendStack extends Stack {
                                                                      .solutionStackName("64bit Amazon Linux 2 v3.1.6 running Corretto 11")
                                                                      .optionSettings(List.of(instanceTypeOptionSettingProperty, iamInstanceProfileOptionSettingProperty))
                                                                      .versionLabel(cfnApplicationVersion.getRef())
+                                                                     .cnamePrefix("driftbottle")
                                                                      .build();
         new CfnEnvironment(this, "DriftbottleEnvironmentId", cfnEnvironmentProps);
 
