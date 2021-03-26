@@ -15,9 +15,10 @@ class Service {
         String email = inputEmail.toLowerCase();
         User user = dbRepository.getByEmail(email);
         if (user == null) {
-            user = User.build()
+            user = User.builder()
                        .withUserId(UUID.randomUUID().toString())
-                       .withEmail(email);
+                       .withEmail(email)
+                       .build();
             dbRepository.save(user);
         } else {
             throw new RuntimeException("user with email " + email + " already exists");

@@ -28,7 +28,7 @@ public class DbRepository {
                 .withConsistentRead(false)
                 .withKeyConditionExpression("email = :email")
                 .withExpressionAttributeValues(Map.of(":email", new AttributeValue(email)))
-                .withProjectionExpression("userId, email, username, image, code, partner, admin");
+                .withProjectionExpression("userId, email");
         PaginatedQueryList<User> queryList = userDynamoDBMapper.query(User.class, queryExpression, userTableConfig);
         if (queryList.isEmpty()) {
             return null;
