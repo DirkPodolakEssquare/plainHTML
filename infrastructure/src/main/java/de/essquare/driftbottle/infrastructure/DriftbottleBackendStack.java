@@ -2,6 +2,8 @@ package de.essquare.driftbottle.infrastructure;
 
 import java.util.List;
 
+import software.amazon.awscdk.core.CfnOutput;
+import software.amazon.awscdk.core.CfnOutputProps;
 import software.amazon.awscdk.core.Construct;
 import software.amazon.awscdk.core.Stack;
 import software.amazon.awscdk.core.StackProps;
@@ -16,9 +18,8 @@ import software.amazon.awscdk.services.s3.assets.AssetProps;
 
 public class DriftbottleBackendStack extends Stack {
 
-    public DriftbottleBackendStack(final Construct scope, final String id) {
-        this(scope, id, null);
-    }
+    public static final String CNAME_PREFIX = "driftbottle";
+    public static final String BASE_API_URL_ID = "DriftbottleBaseAPIUrl";
 
     public DriftbottleBackendStack(final Construct scope, final String id, final StackProps props) {
         super(scope, id, props);
@@ -64,11 +65,18 @@ public class DriftbottleBackendStack extends Stack {
                                                                      .solutionStackName("64bit Amazon Linux 2 v3.1.6 running Corretto 11")
                                                                      .optionSettings(List.of(instanceTypeOptionSettingProperty, iamInstanceProfileOptionSettingProperty))
                                                                      .versionLabel(cfnApplicationVersion.getRef())
-                                                                     .cnamePrefix("driftbottle")
+                                                                     .cnamePrefix(CNAME_PREFIX)
                                                                      .build();
         new CfnEnvironment(this, "DriftbottleEnvironmentId", cfnEnvironmentProps);
 
         cfnApplicationVersion.addDependsOn(application); // Also very important - make sure that `app` exists before creating an app version
+
+        // output the base api url
+        // e.g. http://driftbottle.eu-central-1.elasticbeanstalk.com/api
+        CfnOutputProps cfnOutputProps = CfnOutputProps.builder()
+                                                      .value("http://" + CNAME_PREFIX + "." + props.getEnv().getRegion() + ".elasticbeanstalk.com/api")
+                                                      .build();
+        new CfnOutput(this, BASE_API_URL_ID + DriftbottleCognitoStack.OUTPUT_PARAMETER_POSTFIX, cfnOutputProps);
     }
 
 }

@@ -69,6 +69,6 @@ header a {
     background-color: #bababa;
 }
 
-#authentication {
-
+#conversationTemplate {
+    display: none;
 }

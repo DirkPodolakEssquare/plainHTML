@@ -1,7 +1,6 @@
-// this file will not get copied into the "dist" folder by webpack, this is excluded in the webpack.config.js
-// the lambda "FrontendConfigCreator" (using the handler "writeConfig.js") will create this file with correct runtime data during stack deployment
+// this file will not get copied into the "dist" folder by webpack, it is handled by the deploy script and excluded in the webpack.config.js
 
-const aws_config = {
+const awsConfig = {
   "aws_project_region": "eu-central-1",
   "aws_cognito_region": "eu-central-1",
   "aws_user_pools_id": "eu-central-1_KKjEBt79P",
@@ -9,4 +8,9 @@ const aws_config = {
   "oauth": {}
 }
 
-export { aws_config }
+const driftbottleConfig = {
+  "baseAPIUrl": "http://localhost:5000/api"
+}
+
+export { awsConfig, driftbottleConfig }
+

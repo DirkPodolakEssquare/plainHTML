@@ -27,16 +27,11 @@ public class DriftbottleFrontendStack extends Stack {
 
     private Bucket frontendBucket;
 
-    public DriftbottleFrontendStack(Construct scope,
-                                    String id,
-                                    StackProps props,
-                                    String userpoolId,
-                                    String userpoolClientId,
-                                    String region) {
+    public DriftbottleFrontendStack(Construct scope, String id, StackProps props) {
         super(scope, id, props);
 
         createBucket();
-        putFrontendCodeToBucket(userpoolId, userpoolClientId, region);
+        putFrontendCodeToBucket();
     }
 
     private void createBucket() {
@@ -62,7 +57,7 @@ public class DriftbottleFrontendStack extends Stack {
         new CfnOutput(this, FRONTEND_BUCKET_NAME + OUTPUT_PARAMETER_POSTFIX, cfnOutputProps);
     }
 
-    private void putFrontendCodeToBucket(String userpoolId, String userpoolClientId, String region) {
+    private void putFrontendCodeToBucket() {
         // deploy frontend sourcecode from dist folder to the S3 bucket
         BucketDeploymentProps bucketDeploymentProps = BucketDeploymentProps.builder()
                                                                            .destinationBucket(frontendBucket)

@@ -1,10 +1,10 @@
-import {aws_config} from '../myConfig.js'
+import { awsConfig, driftbottleConfig } from '../myConfig.js'
 import '../css/driftbottle.css'
 import Amplify from '@aws-amplify/core'
 import Auth from '@aws-amplify/auth'
 
-Amplify.configure(aws_config)
-Auth.configure(aws_config)
+Amplify.configure(awsConfig)
+Auth.configure(awsConfig)
 
 // ------------------------------------------------------------------------------------------
 // authentication
@@ -24,6 +24,7 @@ async function initAuthentication() {
     document.getElementById("inbox").style.display = "flex"
 
     registerLogoutHandler()
+    loadConversations()
   } else {
     console.log("not logged in")
 
@@ -166,4 +167,64 @@ function registerVerificationCodeHandler() {
 
 // ------------------------------------------------------------------------------------------
 // /authentication
+// ------------------------------------------------------------------------------------------
+
+
+
+// ------------------------------------------------------------------------------------------
+// inbox
+// ------------------------------------------------------------------------------------------
+async function loadConversations() {
+  // [
+  //   {
+  //     "id": "45d66579-f116-4e8d-a72b-751dd4ce8e14",
+  //     "sender": "b68ce084-81fe-4854-b20c-d8118a8ba43a",
+  //     "text": "Hi there!!",
+  //     "timestamp": "2021-02-26T08:31:26Z"
+  //   },{
+  //   "id": "b511f496-429c-43e9-a57e-618f38a663cb",
+  //   "sender": "fd17730f-f0b6-40bd-a18f-4d1116002b9b",
+  //   "text": "I can help you.",
+  //   "timestamp": "2021-02-28T11:49:16Z"
+  // }
+  // ]
+
+  const session = await Auth.currentSession()
+  const token = session.idToken.jwtToken
+  const response = await fetch(`${driftbottleConfig.baseAPIUrl}/conversations`, {
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    },
+    method: "GET"
+  })
+
+  if (response.ok) {
+    // get data
+    const conversations = await response.json()
+
+    // clear list
+    const conversationTemplateElement = document.getElementById("conversationTemplate")
+    const conversationListElement = document.getElementById("inbox").querySelector(".allConversations")
+    while (conversationListElement.firstChild) {
+      conversationListElement.removeChild(conversationListElement.lastChild);
+    }
+    conversationListElement.appendChild(conversationTemplateElement)
+
+    // fill list
+    conversations.forEach((conversation) => {
+      const conversationElement = conversationTemplateElement.cloneNode(true)
+      conversationElement.id = conversation.id
+      conversationElement.querySelector("h5").html(conversation.sender)
+      conversationElement.querySelector("p.card-text").firstChild.html(conversation.text)
+      conversationElement.querySelector("p.card-text small").html(conversation.timestamp)
+      conversationListElement.appendChild(conversationElement)
+    })
+  } else {
+    console.error(response)
+  }
+}
+
+// ------------------------------------------------------------------------------------------
+//
 // ------------------------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-const aws_config = {
+const awsConfig = {
   "aws_project_region": "###REGION###",
   "aws_cognito_region": "###REGION###",
   "aws_user_pools_id": "###USERPOOLID###",
@@ -6,4 +6,8 @@ const aws_config = {
   "oauth": {}
 }
 
-export { aws_config }
+const driftbottleConfig = {
+  "baseAPIUrl": "###BASEAPIURL###"
+}
+
+export { awsConfig, driftbottleConfig }
