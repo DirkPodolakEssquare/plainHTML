@@ -23,7 +23,7 @@ examples
 // </editor-fold>
 
 // <editor-fold desc="TEMPLATE :: create queue and register it's URL in a lambda">
-//        final Queue jobsQueue = new Queue(this, "jobs");
+//        Queue jobsQueue = new Queue(this, "jobs");
 //        Function createJobLambda = Function.Builder.create(this, "create-job")
 //                                                   .handler("index.handler")
 //                                                   .code(Code.fromAsset("./create-job-lambda-code"))

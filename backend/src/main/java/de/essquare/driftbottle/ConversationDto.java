@@ -12,7 +12,7 @@ public class ConversationDto {
     public ConversationDto() {
     }
 
-    public ConversationDto(final String id, final String sender, final String text, final String timestamp) {
+    public ConversationDto(String id, String sender, String text, String timestamp) {
         this.id = id;
         this.sender = sender;
         this.text = text;
@@ -23,7 +23,7 @@ public class ConversationDto {
         return id;
     }
 
-    public void setId(final String id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -31,7 +31,7 @@ public class ConversationDto {
         return sender;
     }
 
-    public void setSender(final String sender) {
+    public void setSender(String sender) {
         this.sender = sender;
     }
 
@@ -39,7 +39,7 @@ public class ConversationDto {
         return text;
     }
 
-    public void setText(final String text) {
+    public void setText(String text) {
         this.text = text;
     }
 
@@ -47,19 +47,19 @@ public class ConversationDto {
         return timestamp;
     }
 
-    public void setTimestamp(final String timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 
     @Override
-    public boolean equals(final Object o) {
+    public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        final ConversationDto that = (ConversationDto) o;
+        ConversationDto that = (ConversationDto) o;
         return Objects.equals(id, that.id) && Objects.equals(sender, that.sender) && Objects.equals(text, that.text)
                && Objects.equals(timestamp, that.timestamp);
     }
@@ -84,43 +84,38 @@ public class ConversationDto {
     }
 
     public static final class ConversationDtoBuilder {
-        private String id;
-        private String sender;
-        private String text;
-        private String timestamp;
 
-        private ConversationDtoBuilder() {}
+        private final ConversationDto conversationDto;
+
+        private ConversationDtoBuilder() {
+            conversationDto = new ConversationDto();
+        }
 
         public static ConversationDtoBuilder builder() {
             return new ConversationDtoBuilder();
         }
 
         public ConversationDtoBuilder withId(String id) {
-            this.id = id;
+            conversationDto.setId(id);
             return this;
         }
 
         public ConversationDtoBuilder withSender(String sender) {
-            this.sender = sender;
+            conversationDto.setSender(sender);
             return this;
         }
 
         public ConversationDtoBuilder withText(String text) {
-            this.text = text;
+            conversationDto.setText(text);
             return this;
         }
 
         public ConversationDtoBuilder withTimestamp(String timestamp) {
-            this.timestamp = timestamp;
+            conversationDto.setTimestamp(timestamp);
             return this;
         }
 
         public ConversationDto build() {
-            ConversationDto conversationDto = new ConversationDto();
-            conversationDto.setId(id);
-            conversationDto.setSender(sender);
-            conversationDto.setText(text);
-            conversationDto.setTimestamp(timestamp);
             return conversationDto;
         }
     }

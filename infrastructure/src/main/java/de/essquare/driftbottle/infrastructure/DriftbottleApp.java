@@ -15,7 +15,7 @@ public class DriftbottleApp {
                                                                        .region(ESSQUARE_REGION)
                                                                        .build();
 
-    public static void main(final String[] args) throws IOException {
+    public static void main(String[] args) throws IOException {
         App app = new App();
 
         StackProps stackProps = StackProps.builder()

@@ -1,1 +1,5 @@
-{}
+{
+  "DriftbottleBackendStack": {
+    "DriftbottleBaseAPIUrlOutputParameter": "http://driftbottle.eu-central-1.elasticbeanstalk.com/api"
+  }
+}

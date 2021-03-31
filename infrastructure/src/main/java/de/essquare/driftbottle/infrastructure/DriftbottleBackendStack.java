@@ -21,7 +21,7 @@ public class DriftbottleBackendStack extends Stack {
     public static final String CNAME_PREFIX = "driftbottle";
     public static final String BASE_API_URL_ID = "DriftbottleBaseAPIUrl";
 
-    public DriftbottleBackendStack(final Construct scope, final String id, final StackProps props) {
+    public DriftbottleBackendStack(Construct scope, String id, StackProps props) {
         super(scope, id, props);
 
         // Construct an S3 asset from the ZIP located in the target folder.

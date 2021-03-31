@@ -44,7 +44,7 @@ public class DriftbottleCognitoStack extends Stack {
     private IUserPool userPool;
     private IUserPoolClient userPoolClient;
 
-    public DriftbottleCognitoStack(final Construct scope, final String id, final StackProps props) {
+    public DriftbottleCognitoStack(Construct scope, String id, StackProps props) {
         super(scope, id, props);
 
         createUserPool();
