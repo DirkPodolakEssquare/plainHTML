@@ -1,7 +1,0 @@
-{
-  "DriftbottleCognitoStack": {
-    "DriftbottleUserpoolIdOutputParameter": "eu-central-1_GfGNBAIxd",
-    "DriftbottleUserpoolClientIdOutputParameter": "1nvroct0nauqbneg6243nsroml",
-    "DriftbottleRegionOutputParameter": "eu-central-1"
-  }
-}
