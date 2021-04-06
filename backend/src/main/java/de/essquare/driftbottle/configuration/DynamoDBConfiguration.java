@@ -1,7 +1,5 @@
 package de.essquare.driftbottle.configuration;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,8 +12,6 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 
 @Configuration
 public class DynamoDBConfiguration {
-
-    private static final Logger LOG = LoggerFactory.getLogger(DynamoDBConfiguration.class);
 
     private final String dynamoDbEndpointUrl;
     private final String awsRegion;

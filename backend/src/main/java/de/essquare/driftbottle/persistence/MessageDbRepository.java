@@ -3,7 +3,6 @@ package de.essquare.driftbottle.persistence;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
@@ -30,8 +29,7 @@ public class MessageDbRepository {
                 .withIndexName("conversation-index")
                 .withConsistentRead(false)
                 .withKeyConditionExpression("conversation = :conversation")
-                .withExpressionAttributeValues(Map.of(":conversation", new AttributeValue(conversation)))
-                .withProjectionExpression("content, created");
+                .withExpressionAttributeValues(Map.of(":conversation", new AttributeValue(conversation)));
         return messageDynamoDBMapper.query(MessageEntity.class, queryExpression, messageTableConfig);
     }
 

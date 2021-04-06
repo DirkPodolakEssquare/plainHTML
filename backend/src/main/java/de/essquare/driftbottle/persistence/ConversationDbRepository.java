@@ -27,8 +27,7 @@ public class ConversationDbRepository {
                 .withIndexName("receiver-index")
                 .withConsistentRead(false)
                 .withKeyConditionExpression("receiver = :receiver")
-                .withExpressionAttributeValues(Map.of(":receiver", new AttributeValue(receiver)))
-                .withProjectionExpression("id");
+                .withExpressionAttributeValues(Map.of(":receiver", new AttributeValue(receiver)));
         return conversationDynamoDBMapper.query(ConversationEntity.class, queryExpression, conversationTableConfig);
     }
 }

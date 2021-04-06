@@ -39,6 +39,7 @@ import static de.essquare.driftbottle.infrastructure.DriftbottleApp.SSM_PARAMETE
 
 public class DriftbottleCognitoStack extends Stack {
 
+    private static final String DOMAIN_NAME = "driftbottle";
     private static final String DOMAIN_PREFIX = "https://";
     private static final String DOMAIN_S3_PREFIX = ".s3.";
     private static final String DOMAIN_POSTFIX = ".amazonaws.com/";
@@ -113,7 +114,7 @@ public class DriftbottleCognitoStack extends Stack {
         assert cfnUserPool != null;
 
         CognitoDomainOptions cognitoDomainOptions = CognitoDomainOptions.builder()
-                                                                        .domainPrefix(DOMAIN_PREFIX)
+                                                                        .domainPrefix(DOMAIN_NAME)
                                                                         .build();
         UserPoolDomainOptions userPoolDomainOptions = UserPoolDomainOptions.builder()
                                                                            .cognitoDomain(cognitoDomainOptions)

@@ -46,12 +46,13 @@ aws dynamodb create-table \
                 \"KeySchema\": [{\"AttributeName\":\"receiver\",\"KeyType\":\"HASH\"}],
                 \"ProvisionedThroughput\": {\"ReadCapacityUnits\": 10, \"WriteCapacityUnits\": 5},
                 \"Projection\":{
-                    \"ProjectionType\":\"ALL\"
+                    \"ProjectionType\":\"INCLUDE\",
+                    \"NonKeyAttributes\":[\"sender\"]
                 }
             }
         ]"
 
-aws --endpoint-url http://localhost:5569/ dynamodb put-item --table-name Conversation --item '{"id":{"S":"conversationId1"},"sender":{"S":"sender1"},"receiver":{"S":"c1e211ff-b623-4860-9d86-b6f534e9d747"},"status":{"S":"active"}}'
+aws --endpoint-url http://localhost:5569/ dynamodb put-item --table-name Conversation --item '{"id":{"S":"conversationId1"},"sender":{"S":"sender1"},"receiver":{"S":"37a61844-3ef3-45e0-a59a-e9cb62c29ac6"},"status":{"S":"active"}}'
 
 aws --endpoint-url=http://localhost:5569 dynamodb scan --table-name Conversation
 
@@ -60,7 +61,7 @@ aws dynamodb query \
     --table-name Conversation \
     --index-name receiver-index \
     --key-condition-expression "receiver = :receiver" \
-    --expression-attribute-values '{":receiver":{"S":"c1e211ff-b623-4860-9d86-b6f534e9d747"} }'
+    --expression-attribute-values '{":receiver":{"S":"37a61844-3ef3-45e0-a59a-e9cb62c29ac6"} }'
 
 #aws dynamodb delete-table \
 #    --endpoint-url http://localhost:5569 \
