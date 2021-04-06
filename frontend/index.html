@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
-    <link rel="shortcut icon" href="/favicon.ico">
+    <link href="/favicon.ico" rel="shortcut icon">
 
     <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
           integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" rel="stylesheet">
@@ -12,159 +12,127 @@
 
     <link href="css/driftbottle.css" rel="stylesheet">
 </head>
-<body>
-<header class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-body border-bottom shadow-sm">
-    <a class="h5 my-0 me-md-auto fw-normal brand" href="index.html">Driftbottle</a>
-    <nav class="my-2 my-md-0 me-md-3">
-        <a class="p-2 text-dark" href="#">Features</a>
-        <a class="p-2 text-dark" href="#">Enterprise</a>
-        <a class="p-2 text-dark" href="#">Support</a>
-        <a class="p-2 text-dark" href="#">Pricing</a>
-    </nav>
-    <a class="btn btn-outline-primary" href="#" id="signup">Sign up</a>
-    <a class="btn btn-outline-primary" href="#" id="login">Login</a>
-    <a class="btn btn-outline-primary" href="#" id="logout">Logout</a>
-</header>
+<body style="background-image: url('images/message-in-a-bottle.png'); background-position: center; background-repeat: no-repeat; background-size: cover;">
 
-<div class="container" id="authentication">
-    <div class="row">
-        <div class="col-sm-6 offset-sm-3">
-            <div class="card border-dark mb-3">
-                <div class="card-header" id="authenticationCardHeader">Registration</div>
-                <div class="card-body text-dark">
-                    <form id="authenticationForm">
-                        <div class="mb-3">
-                            <label class="form-label" for="userEmail">Email address</label>
-                            <input aria-describedby="emailHelp" class="form-control" id="userEmail" type="email">
-                            <div class="form-text" id="emailHelp">We'll never share your email with anyone else.</div>
+<amplify-authenticator>
+    <header class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-body border-bottom shadow-sm">
+        <a class="h5 my-0 me-md-auto fw-normal brand" href="index.html">Driftbottle</a>
+        <nav class="my-2 my-md-0 me-md-3">
+            <a class="p-2 text-dark" href="#">Features</a>
+            <a class="p-2 text-dark" href="#">Enterprise</a>
+            <a class="p-2 text-dark" href="#">Support</a>
+            <a class="p-2 text-dark" href="#">Pricing</a>
+        </nav>
+        <amplify-sign-out></amplify-sign-out>
+    </header>
+
+    <div class="container" id="inbox">
+        <div class="row">
+            <div class="col-sm-6 allConversations">
+
+                <div class="card mb-3" id="conversationTemplate">
+                    <div class="row g-0">
+                        <div class="col-md-3 avatar">
+                            <img alt="avatar" class="img-fluid" src="images/Portrait_Placeholder.png"/>
                         </div>
-                        <div class="mb-3" id="authenticationVerificationCode">
-                            <label class="form-label" for="verificationCode">Verification Code</label>
-                            <input class="form-control" id="verificationCode" type="text">
+                        <div class="col-md-9">
+                            <div class="card-body">
+                                <h5 class="card-title">b5329a49-bc58-4697-82f9-982273f983e9</h5>
+                                <p class="card-text">Hello buddy. I'm a mountain hiker and want to share my passion with you. Would you like to do a five day trail in the
+                                    ...</p>
+                                <p class="card-text"><small class="text-muted">Yesterday</small></p>
+                            </div>
                         </div>
-                        <div class="mb-3" id="authenticationPassword">
-                            <label class="form-label" for="userPassword">Password</label>
-                            <input class="form-control" id="userPassword" type="password">
-                        </div>
-                        <div class="mb-3" id="authenticationRepeatPassword">
-                            <label class="form-label" for="userPasswordRepetition">Repeat Password</label>
-                            <input class="form-control" id="userPasswordRepetition" type="password">
-                        </div>
-                        <button class="btn btn-primary" id="authenticationSubmit" type="submit">login now</button>
-                        <button class="btn btn-primary" id="showVerificationCode" type="submit">I have a verification code</button>
-                    </form>
+                    </div>
                 </div>
+
+                <div class="card mb-3">
+                    <div class="row g-0">
+                        <div class="col-md-3 avatar">
+                            <img alt="avatar" class="img-fluid" src="images/Portrait_Placeholder.png"/>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="card-body">
+                                <h5 class="card-title">b5329a49-bc58-4697-82f9-982273f983e9</h5>
+                                <p class="card-text">Hello buddy. I'm a mountain hiker and want to share my passion with you. Would you like to do a five day trail in the
+                                    ...</p>
+                                <p class="card-text"><small class="text-muted">Yesterday</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-3">
+                    <div class="row g-0">
+                        <div class="col-md-3 avatar">
+                            <img alt="avatar" class="img-fluid" src="images/Portrait_Placeholder.png"/>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="card-body">
+                                <h5 class="card-title">b5329a49-bc58-4697-82f9-982273f983e9</h5>
+                                <p class="card-text">Hello buddy. I'm a mountain hiker and want to share my passion with you. Would you like to do a five day trail in the
+                                    ...</p>
+                                <p class="card-text"><small class="text-muted">Yesterday</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-3">
+                    <div class="row g-0">
+                        <div class="col-md-3 avatar">
+                            <img alt="avatar" class="img-fluid" src="images/Portrait_Placeholder.png"/>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="card-body">
+                                <h5 class="card-title">b5329a49-bc58-4697-82f9-982273f983e9</h5>
+                                <p class="card-text">Hello buddy. I'm a mountain hiker and want to share my passion with you. Would you like to do a five day trail in the
+                                    ...</p>
+                                <p class="card-text"><small class="text-muted">Yesterday</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-3">
+                    <div class="row g-0">
+                        <div class="col-md-3 avatar">
+                            <img alt="avatar" class="img-fluid" src="images/Portrait_Placeholder.png"/>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="card-body">
+                                <h5 class="card-title">b5329a49-bc58-4697-82f9-982273f983e9</h5>
+                                <p class="card-text">Hello buddy. I'm a mountain hiker and want to share my passion with you. Would you like to do a five day trail in the
+                                    ...</p>
+                                <p class="card-text"><small class="text-muted">Yesterday</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p>Hallo 1</p>
+                <p>Hallo 2</p>
+                <p>Hallo 3</p>
+                <p>Hallo 4</p>
+                <p>Hallo 5</p>
+                <p>Hallo 6</p>
+                <p>Hallo 7</p>
+                <p>Hallo 8</p>
+                <p>Hallo 9</p>
+                <p>Hallo 0</p>
+                <p>Hallo 1</p>
+                <p>Hallo 2</p>
+                <p>Hallo 3</p>
+                <p>Hallo 4</p>
+                <p>Hallo 5</p>
+                <p>Hallo 6</p>
+                <p>Hallo 7</p>
+                <p>Hallo 8</p>
+                <p>Hallo 9</p>
+                <p>Hallo 0</p>
+            </div>
+            <div class="col-sm-6 singleConversation">
+                Hi
             </div>
         </div>
     </div>
-</div>
-
-<div class="container" id="inbox">
-    <div class="row">
-        <div class="col-sm-6 allConversations">
-
-            <div class="card mb-3" id="conversationTemplate">
-                <div class="row g-0">
-                    <div class="col-md-3 avatar">
-                        <img alt="avatar" class="img-fluid" src="images/Portrait_Placeholder.png"/>
-                    </div>
-                    <div class="col-md-9">
-                        <div class="card-body">
-                            <h5 class="card-title">b5329a49-bc58-4697-82f9-982273f983e9</h5>
-                            <p class="card-text">Hello buddy. I'm a mountain hiker and want to share my passion with you. Would you like to do a five day trail in the
-                                ...</p>
-                            <p class="card-text"><small class="text-muted">Yesterday</small></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card mb-3">
-                <div class="row g-0">
-                    <div class="col-md-3 avatar">
-                        <img alt="avatar" class="img-fluid" src="images/Portrait_Placeholder.png"/>
-                    </div>
-                    <div class="col-md-9">
-                        <div class="card-body">
-                            <h5 class="card-title">b5329a49-bc58-4697-82f9-982273f983e9</h5>
-                            <p class="card-text">Hello buddy. I'm a mountain hiker and want to share my passion with you. Would you like to do a five day trail in the
-                                ...</p>
-                            <p class="card-text"><small class="text-muted">Yesterday</small></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card mb-3">
-                <div class="row g-0">
-                    <div class="col-md-3 avatar">
-                        <img alt="avatar" class="img-fluid" src="images/Portrait_Placeholder.png"/>
-                    </div>
-                    <div class="col-md-9">
-                        <div class="card-body">
-                            <h5 class="card-title">b5329a49-bc58-4697-82f9-982273f983e9</h5>
-                            <p class="card-text">Hello buddy. I'm a mountain hiker and want to share my passion with you. Would you like to do a five day trail in the
-                                ...</p>
-                            <p class="card-text"><small class="text-muted">Yesterday</small></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card mb-3">
-                <div class="row g-0">
-                    <div class="col-md-3 avatar">
-                        <img alt="avatar" class="img-fluid" src="images/Portrait_Placeholder.png"/>
-                    </div>
-                    <div class="col-md-9">
-                        <div class="card-body">
-                            <h5 class="card-title">b5329a49-bc58-4697-82f9-982273f983e9</h5>
-                            <p class="card-text">Hello buddy. I'm a mountain hiker and want to share my passion with you. Would you like to do a five day trail in the
-                                ...</p>
-                            <p class="card-text"><small class="text-muted">Yesterday</small></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card mb-3">
-                <div class="row g-0">
-                    <div class="col-md-3 avatar">
-                        <img alt="avatar" class="img-fluid" src="images/Portrait_Placeholder.png"/>
-                    </div>
-                    <div class="col-md-9">
-                        <div class="card-body">
-                            <h5 class="card-title">b5329a49-bc58-4697-82f9-982273f983e9</h5>
-                            <p class="card-text">Hello buddy. I'm a mountain hiker and want to share my passion with you. Would you like to do a five day trail in the
-                                ...</p>
-                            <p class="card-text"><small class="text-muted">Yesterday</small></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <p>Hallo 1</p>
-            <p>Hallo 2</p>
-            <p>Hallo 3</p>
-            <p>Hallo 4</p>
-            <p>Hallo 5</p>
-            <p>Hallo 6</p>
-            <p>Hallo 7</p>
-            <p>Hallo 8</p>
-            <p>Hallo 9</p>
-            <p>Hallo 0</p>
-            <p>Hallo 1</p>
-            <p>Hallo 2</p>
-            <p>Hallo 3</p>
-            <p>Hallo 4</p>
-            <p>Hallo 5</p>
-            <p>Hallo 6</p>
-            <p>Hallo 7</p>
-            <p>Hallo 8</p>
-            <p>Hallo 9</p>
-            <p>Hallo 0</p>
-        </div>
-        <div class="col-sm-6 singleConversation">
-            Hi
-        </div>
-    </div>
-</div>
+</amplify-authenticator>
 
 <script crossorigin="anonymous" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"></script>

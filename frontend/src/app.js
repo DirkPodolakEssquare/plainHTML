@@ -2,41 +2,71 @@ import { awsConfig, driftbottleConfig } from '../myConfig.js'
 import '../css/driftbottle.css'
 import Amplify from '@aws-amplify/core'
 import Auth from '@aws-amplify/auth'
+import { onAuthUIStateChange } from '@aws-amplify/ui-components'
+import { applyPolyfills, defineCustomElements } from '@aws-amplify/ui-components/loader'
 
-Amplify.configure(awsConfig)
-Auth.configure(awsConfig)
+initAuthentication()
 
 // ------------------------------------------------------------------------------------------
 // authentication
 // ------------------------------------------------------------------------------------------
-
-initAuthentication()
-
 async function initAuthentication() {
+
+  // const awsConfig = {
+  //   "aws_project_region": "eu-central-1",
+  //   "aws_cognito_region": "eu-central-1",
+  //   "aws_user_pools_id": "eu-central-1_1yLRgkbyK",
+  //   "aws_user_pools_web_client_id": "6cjv2hbrolg3h07thapbq12csu",
+  //   "oauth": {
+  //     domain: "driftbottle.auth.eu-central-1.amazoncognito.com",
+  //     scope: ["http://driftbottle.eu-central-1.elasticbeanstalk.com/api/conversation.read"],
+  //     // redirectSignIn: "https://driftbottlefrontendstack-driftbottlefrontendbucke-1gp5phfwh1z3n.s3.eu-central-1.amazonaws.com/",
+  //     redirectSignIn: "http://localhost:8081/",
+  //     redirectSignOut: "",
+  //     responseType: 'code' // or 'token', note that REFRESH token will only be generated when the responseType is code
+  //   }
+  // }
+
+  Amplify.configure(awsConfig)
+  Auth.configure(awsConfig)
+
+  applyPolyfills().then(() => {
+    defineCustomElements(window)
+  })
+
   if (await userIsLoggedIn()) {
-    console.log("logged in")
-    console.log(await getUser())
-
-    document.getElementById("login").style.display = "none"
-    document.getElementById("signup").style.display = "none"
-    document.getElementById("logout").style.display = "flex"
-    document.getElementById("authentication").style.display = "none"
-    document.getElementById("inbox").style.display = "flex"
-
-    registerLogoutHandler()
-    loadConversations()
+    initUserLoggedIn()
   } else {
-    console.log("not logged in")
-
-    document.getElementById("login").style.display = "flex"
-    document.getElementById("signup").style.display = "flex"
-    document.getElementById("logout").style.display = "none"
-    document.getElementById("inbox").style.display = "none"
-
-    registerLoginHandler()
-    registerSignupHandler()
-    registerVerificationCodeHandler()
+    initUserNotLoggedIn()
   }
+
+  let authUIStateChangedToSignedInCounter = 0
+  onAuthUIStateChange((authState, authData) => {
+    // TODO: I don't know why this is called twice, so I workaround double calls with a counter
+    if ("signedin" === authState) {
+      if (authUIStateChangedToSignedInCounter === 0) {
+        initUserLoggedIn()
+        authUIStateChangedToSignedInCounter += 1
+      }
+    } else {
+      initUserNotLoggedIn()
+    }
+  })
+}
+
+async function initUserLoggedIn() {
+  document.getElementById("inbox").style.display = "flex"
+  document.getElementsByTagName("body")[0].style.background = "none"
+
+  loadConversations()
+}
+
+async function initUserNotLoggedIn() {
+  document.getElementById("inbox").style.display = "none"
+  document.getElementsByTagName("body")[0].style.backgroundImage = "url('images/message-in-a-bottle.png')"
+  document.getElementsByTagName("body")[0].style.backgroundPosition = "center"
+  document.getElementsByTagName("body")[0].style.backgroundRepeat = "no-repeat"
+  document.getElementsByTagName("body")[0].style.backgroundSize = "cover"
 }
 
 async function getUser() {
@@ -55,116 +85,6 @@ async function userIsLoggedIn() {
     return false
   }
 }
-
-function registerLogoutHandler() {
-  document.getElementById("logout").onclick = async function (event) {
-    event.preventDefault()
-
-    console.log("logout...")
-    try {
-      await Auth.signOut()
-    } catch (e) {
-      console.error(e)
-    }
-    console.log("...logged out")
-
-    location.reload()
-  }
-}
-
-function registerLoginHandler() {
-  document.getElementById("login").onclick = async function (event) {
-    event.preventDefault()
-
-    document.getElementById("authenticationForm").onsubmit = async function loginFormSubmit(event) {
-      event.preventDefault()
-
-      const email = document.getElementById("userEmail").value
-      const password = document.getElementById("userPassword").value
-
-      try {
-        await Auth.signIn(email, password)
-        location.reload()
-      } catch (e) {
-        console.error(e)
-      }
-    }
-
-    document.getElementById("authenticationCardHeader").innerText = "Login"
-    document.getElementById("authenticationPassword").style.display = "block"
-    document.getElementById("authenticationRepeatPassword").style.display = "none"
-    document.getElementById("authenticationVerificationCode").style.display = "none"
-    document.getElementById("authenticationSubmit").textContent = "login now"
-    document.getElementById("showVerificationCode").style.display = "block"
-    document.getElementById("authentication").style.display = "block"
-  }
-}
-
-function registerSignupHandler() {
-  document.getElementById("signup").onclick = async function (event) {
-    event.preventDefault()
-
-    document.getElementById("authenticationForm").onsubmit = async function registrationFormSubmit(event) {
-      event.preventDefault()
-
-      const email = document.getElementById("userEmail").value
-      const password = document.getElementById("userPassword").value
-      const passwordRepetition = document.getElementById("userPasswordRepetition").value
-
-      if (password !== passwordRepetition) {
-        console.error("password and password repetition do not match")
-        return
-      }
-
-      try {
-        await Auth.signUp({
-          username: email,
-          password: password,
-          attributes: {
-            email: email
-          }
-        })
-
-        location.reload()
-      } catch (error) {
-        console.log('error signing up:', error)
-      }
-    }
-
-    document.getElementById("authenticationCardHeader").innerText = "Registration"
-    document.getElementById("authenticationPassword").style.display = "block"
-    document.getElementById("authenticationRepeatPassword").style.display = "block"
-    document.getElementById("authenticationVerificationCode").style.display = "none"
-    document.getElementById("authenticationSubmit").textContent = "register now"
-    document.getElementById("showVerificationCode").style.display = "block"
-    document.getElementById("authentication").style.display = "block"
-  }
-}
-
-function registerVerificationCodeHandler() {
-  document.getElementById("showVerificationCode").onclick = async function (event) {
-    event.preventDefault()
-
-    document.getElementById("authenticationForm").onsubmit = async function registrationFormSubmit(event) {
-      event.preventDefault()
-
-      const email = document.getElementById("userEmail").value
-      const verificationCode = document.getElementById("verificationCode").value
-
-      await Auth.confirmSignUp(email, verificationCode);
-      location.reload()
-    }
-
-    document.getElementById("authenticationCardHeader").innerText = "Verification"
-    document.getElementById("authenticationPassword").style.display = "none"
-    document.getElementById("authenticationRepeatPassword").style.display = "none"
-    document.getElementById("authenticationVerificationCode").style.display = "block"
-    document.getElementById("showVerificationCode").style.display = "none"
-    document.getElementById("authenticationSubmit").textContent = "submit verification code"
-    document.getElementById("authentication").style.display = "block"
-  }
-}
-
 // ------------------------------------------------------------------------------------------
 // /authentication
 // ------------------------------------------------------------------------------------------
@@ -175,6 +95,8 @@ function registerVerificationCodeHandler() {
 // inbox
 // ------------------------------------------------------------------------------------------
 async function loadConversations() {
+  console.log("loading conversations")
+
   // [
   //   {
   //     "id": "45d66579-f116-4e8d-a72b-751dd4ce8e14",
@@ -190,38 +112,49 @@ async function loadConversations() {
   // ]
 
   const session = await Auth.currentSession()
-  const token = session.idToken.jwtToken
-  const response = await fetch(`${driftbottleConfig.baseAPIUrl}/conversations`, {
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`
-    },
-    method: "GET"
-  })
-
-  if (response.ok) {
-    // get data
-    const conversations = await response.json()
-
-    // clear list
-    const conversationTemplateElement = document.getElementById("conversationTemplate")
-    const conversationListElement = document.getElementById("inbox").querySelector(".allConversations")
-    while (conversationListElement.firstChild) {
-      conversationListElement.removeChild(conversationListElement.lastChild);
-    }
-    conversationListElement.appendChild(conversationTemplateElement)
-
-    // fill list
-    conversations.forEach((conversation) => {
-      const conversationElement = conversationTemplateElement.cloneNode(true)
-      conversationElement.id = conversation.id
-      conversationElement.querySelector("h5").html(conversation.sender)
-      conversationElement.querySelector("p.card-text").firstChild.html(conversation.text)
-      conversationElement.querySelector("p.card-text small").html(conversation.timestamp)
-      conversationListElement.appendChild(conversationElement)
+   // const token = session.idToken.jwtToken
+  const token = session.accessToken.jwtToken
+console.log("token")
+console.log(token)
+  try {
+    const response = await fetch(`${driftbottleConfig.baseAPIUrl}/conversations`, {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      method: "GET"
     })
-  } else {
-    console.error(response)
+    console.log("response")
+    console.log(response)
+
+    if (response.ok) {
+      // get data
+      const conversations = await response.json()
+      console.log("conversations")
+      console.log(conversations)
+
+      // clear list
+      const conversationTemplateElement = document.getElementById("conversationTemplate")
+      const conversationListElement = document.getElementById("inbox").querySelector(".allConversations")
+      while (conversationListElement.firstChild) {
+        conversationListElement.removeChild(conversationListElement.lastChild);
+      }
+      conversationListElement.appendChild(conversationTemplateElement)
+
+      // fill list
+      conversations.forEach((conversation) => {
+        const conversationElement = conversationTemplateElement.cloneNode(true)
+        conversationElement.id = conversation.id
+        conversationElement.querySelector("h5").html(conversation.sender)
+        conversationElement.querySelector("p.card-text").firstChild.html(conversation.text)
+        conversationElement.querySelector("p.card-text small").html(conversation.timestamp)
+        conversationListElement.appendChild(conversationElement)
+      })
+    } else {
+      console.error(response)
+    }
+  } catch (e) {
+    console.error(e)
   }
 }
 

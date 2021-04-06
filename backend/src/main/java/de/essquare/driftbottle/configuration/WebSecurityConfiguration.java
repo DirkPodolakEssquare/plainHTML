@@ -11,6 +11,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .cors()
+                .and()
                 .authorizeRequests()
                 .antMatchers("/api/public/**", "/actuator/health")
                 .permitAll()
@@ -20,4 +22,3 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
     }
 }
-

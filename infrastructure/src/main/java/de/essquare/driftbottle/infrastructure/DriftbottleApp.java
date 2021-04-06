@@ -15,6 +15,9 @@ public class DriftbottleApp {
                                                                        .region(ESSQUARE_REGION)
                                                                        .build();
 
+    public static final String SSM_PARAMETER_POSTFIX = "SSMParameter";
+    public static final String OUTPUT_PARAMETER_POSTFIX = "OutputParameter";
+
     public static void main(String[] args) throws IOException {
         App app = new App();
 
@@ -22,9 +25,9 @@ public class DriftbottleApp {
                                           .env(ESSQUARE_ENVIRONMENT)
                                           .build();
 
-        new DriftbottleCognitoStack(app, "DriftbottleCognitoStack", stackProps);
+        DriftbottleFrontendStack driftbottleFrontendStack = new DriftbottleFrontendStack(app, "DriftbottleFrontendStack", stackProps);
+        new DriftbottleCognitoStack(app, "DriftbottleCognitoStack", stackProps, driftbottleFrontendStack.getFrontendBucket());
         new DriftbottleBackendStack(app, "DriftbottleBackendStack", stackProps);
-        new DriftbottleFrontendStack(app, "DriftbottleFrontendStack", stackProps);
 
         app.synth();
     }

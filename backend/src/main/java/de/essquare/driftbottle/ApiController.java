@@ -55,7 +55,8 @@ public class ApiController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PreAuthorize("hasAuthority('SCOPE_http://driftbottle.eu-central-1.elasticbeanstalk.com/api/user.read')")
+//    using amplify ui with cognito will not give you any scope :-(
+//    @PreAuthorize("hasAuthority('SCOPE_http://driftbottle.eu-central-1.elasticbeanstalk.com/api/user.read')")
     @GetMapping(path = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserEntity> getUser(@RequestParam String userId) {
         // ingress
@@ -74,7 +75,8 @@ public class ApiController {
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
-    @PreAuthorize("hasAuthority('SCOPE_http://driftbottle.eu-central-1.elasticbeanstalk.com/api/user.read')")
+//    using amplify ui with cognito will not give you any scope :-(
+//    @PreAuthorize("hasAuthority('SCOPE_http://driftbottle.eu-central-1.elasticbeanstalk.com/api/conversation.read')")
     @GetMapping(path = "/conversations", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ConversationDto>> getConversations() {
         // ingress

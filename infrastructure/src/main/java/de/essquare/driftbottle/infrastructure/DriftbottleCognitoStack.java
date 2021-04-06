@@ -14,9 +14,12 @@ import software.amazon.awscdk.services.cognito.CfnUserPool.AccountRecoverySettin
 import software.amazon.awscdk.services.cognito.CfnUserPool.RecoveryOptionProperty;
 import software.amazon.awscdk.services.cognito.CognitoDomainOptions;
 import software.amazon.awscdk.services.cognito.IUserPool;
-import software.amazon.awscdk.services.cognito.IUserPoolClient;
 import software.amazon.awscdk.services.cognito.Mfa;
+import software.amazon.awscdk.services.cognito.OAuthScope;
+import software.amazon.awscdk.services.cognito.OAuthSettings;
 import software.amazon.awscdk.services.cognito.PasswordPolicy;
+import software.amazon.awscdk.services.cognito.ResourceServerScope;
+import software.amazon.awscdk.services.cognito.ResourceServerScopeProps;
 import software.amazon.awscdk.services.cognito.SignInAliases;
 import software.amazon.awscdk.services.cognito.StandardAttribute;
 import software.amazon.awscdk.services.cognito.StandardAttributes;
@@ -25,46 +28,45 @@ import software.amazon.awscdk.services.cognito.UserPoolClient;
 import software.amazon.awscdk.services.cognito.UserPoolClientProps;
 import software.amazon.awscdk.services.cognito.UserPoolDomainOptions;
 import software.amazon.awscdk.services.cognito.UserPoolProps;
-import software.amazon.awscdk.services.cognito.UserVerificationConfig;
-import software.amazon.awscdk.services.cognito.VerificationEmailStyle;
+import software.amazon.awscdk.services.cognito.UserPoolResourceServer;
+import software.amazon.awscdk.services.cognito.UserPoolResourceServerProps;
+import software.amazon.awscdk.services.s3.Bucket;
 import software.amazon.awscdk.services.ssm.StringParameter;
 import software.amazon.awscdk.services.ssm.StringParameterProps;
 
+import static de.essquare.driftbottle.infrastructure.DriftbottleApp.OUTPUT_PARAMETER_POSTFIX;
+import static de.essquare.driftbottle.infrastructure.DriftbottleApp.SSM_PARAMETER_POSTFIX;
+
 public class DriftbottleCognitoStack extends Stack {
 
-    public static final String USERPOOL_NAME = "DriftbottleUserpoolName";
-    public static final String USERPOOL_ID = "DriftbottleUserpoolId";
-    public static final String USERPOOL_CLIENT_NAME = "DriftbottleUserpoolClientName";
-    public static final String USERPOOL_CLIENT_ID = "DriftbottleUserpoolClientId";
-    public static final String SSM_PARAMETER_POSTFIX = "SSMParameter";
-    public static final String OUTPUT_PARAMETER_POSTFIX = "OutputParameter";
-    public static final String DOMAIN_ID = "DriftbottleDomainId";
-    public static final String DOMAIN_PREFIX = "driftbottle";
+    private static final String DOMAIN_PREFIX = "https://";
+    private static final String DOMAIN_S3_PREFIX = ".s3.";
+    private static final String DOMAIN_POSTFIX = ".amazonaws.com/";
+    private static final String DOMAIN_PAGE = "index.html";
 
-    private IUserPool userPool;
-    private IUserPoolClient userPoolClient;
+    private static final String USERPOOL_NAME = "DriftbottleUserpoolName";
+    private static final String USERPOOL_ID = "DriftbottleUserpoolId";
+    private static final String USERPOOL_CLIENT_NAME = "DriftbottleUserpoolClientName";
+    private static final String USERPOOL_CLIENT_ID = "DriftbottleUserpoolClientId";
+    private static final String DOMAIN_ID = "DriftbottleDomainId";
+    private static final String REGION_ID = "DriftbottleRegion";
+    private static final String USERPOOL_RESOURCE_SERVER_ID = "DriftbottleUserpoolResourcesServerId";
 
-    public DriftbottleCognitoStack(Construct scope, String id, StackProps props) {
+    public DriftbottleCognitoStack(Construct scope, String id, StackProps props, final Bucket frontendBucket) {
         super(scope, id, props);
 
-        createUserPool();
-        createUserPoolClient();
+        IUserPool userPool = createUserPool(DOMAIN_PREFIX + frontendBucket.getBucketName() + DOMAIN_S3_PREFIX + props.getEnv().getRegion() + DOMAIN_POSTFIX + DOMAIN_PAGE);
+        createUserPoolClient(userPool);
+        createUserPoolResourceServer(userPool);
 
+        assert props.getEnv() != null;
         CfnOutputProps cfnOutputProps = CfnOutputProps.builder()
                                                       .value(props.getEnv().getRegion())
                                                       .build();
-        new CfnOutput(this, "DriftbottleRegion" + DriftbottleCognitoStack.OUTPUT_PARAMETER_POSTFIX, cfnOutputProps);
+        new CfnOutput(this, REGION_ID + OUTPUT_PARAMETER_POSTFIX, cfnOutputProps);
     }
 
-    public IUserPool getUserPool() {
-        return userPool;
-    }
-
-    public IUserPoolClient getUserPoolClient() {
-        return userPoolClient;
-    }
-
-    private void createUserPool() {
+    private IUserPool createUserPool(final String bucketName) {
         // create userpool
 
 //        userVerification: {
@@ -105,18 +107,18 @@ public class DriftbottleCognitoStack extends Stack {
 //                                                   .userVerification(userVerificationConfig)
                                                    .build();
 
-        userPool = new UserPool(this, USERPOOL_ID, userPoolProps);
+        IUserPool userPool = new UserPool(this, USERPOOL_ID, userPoolProps);
         CfnUserPool cfnUserPool = (CfnUserPool) userPool.getNode()
                                                         .getDefaultChild();
         assert cfnUserPool != null;
 
-//        CognitoDomainOptions cognitoDomainOptions = CognitoDomainOptions.builder()
-//                                                                        .domainPrefix(DOMAIN_PREFIX)
-//                                                                        .build();
-//        UserPoolDomainOptions userPoolDomainOptions = UserPoolDomainOptions.builder()
-//                                                                           .cognitoDomain(cognitoDomainOptions)
-//                                                                           .build();
-//        userPool.addDomain(DOMAIN_ID, userPoolDomainOptions);
+        CognitoDomainOptions cognitoDomainOptions = CognitoDomainOptions.builder()
+                                                                        .domainPrefix(DOMAIN_PREFIX)
+                                                                        .build();
+        UserPoolDomainOptions userPoolDomainOptions = UserPoolDomainOptions.builder()
+                                                                           .cognitoDomain(cognitoDomainOptions)
+                                                                           .build();
+        userPool.addDomain(DOMAIN_ID, userPoolDomainOptions);
 
         cfnUserPool.setAccountRecoverySetting(AccountRecoverySettingProperty.builder()
                                                                             .recoveryMechanisms(
@@ -142,18 +144,25 @@ public class DriftbottleCognitoStack extends Stack {
                                                       .value(userPool.getUserPoolId())
                                                       .build();
         new CfnOutput(this, USERPOOL_ID + OUTPUT_PARAMETER_POSTFIX, cfnOutputProps);
+
+        return userPool;
     }
 
-    private void createUserPoolClient() {
+    private void createUserPoolClient(final IUserPool userPool) {
         // create userpool client
+        OAuthSettings oAuthSettings = OAuthSettings.builder()
+                                                   .callbackUrls(List.of("https://driftbottle.net/index.html"))
+                                                   .scopes(List.of(OAuthScope.custom("http://driftbottle.eu-central-1.elasticbeanstalk.com/api/conversation.read")))
+                                                   .build();
         UserPoolClientProps userPoolClientProps = UserPoolClientProps.builder()
                                                                      .userPool(userPool)
                                                                      .generateSecret(false)
                                                                      .preventUserExistenceErrors(true)
                                                                      .userPoolClientName(USERPOOL_CLIENT_NAME)
                                                                      .authFlows(AuthFlow.builder().userSrp(true).build())
+                                                                     .oAuth(oAuthSettings)
                                                                      .build();
-        userPoolClient = new UserPoolClient(this, USERPOOL_CLIENT_ID, userPoolClientProps);
+        UserPoolClient userPoolClient = new UserPoolClient(this, USERPOOL_CLIENT_ID, userPoolClientProps);
 
         // store userpool client id in SSM parameter storage
         StringParameterProps stringParameterProps = StringParameterProps.builder()
@@ -167,5 +176,34 @@ public class DriftbottleCognitoStack extends Stack {
                                                       .value(userPoolClient.getUserPoolClientId())
                                                       .build();
         new CfnOutput(this, USERPOOL_CLIENT_ID + OUTPUT_PARAMETER_POSTFIX, cfnOutputProps);
+    }
+
+    private void createUserPoolResourceServer(final IUserPool userPool) {
+        // create userpool resource server
+        ResourceServerScopeProps resourceServerScopeProps = ResourceServerScopeProps.builder()
+                                                                                    .scopeName("conversation.read")
+                                                                                    .scopeDescription("read conversations")
+                                                                                    .build();
+        ResourceServerScope resourceServerScope = new ResourceServerScope(resourceServerScopeProps);
+        UserPoolResourceServerProps userPoolResourceServerProps = UserPoolResourceServerProps.builder()
+                                                                                             .userPool(userPool)
+                                                                                             .scopes(List.of(resourceServerScope))
+                                                                                             .userPoolResourceServerName("DriftbottleBackend")
+                                                                                             .identifier("http://driftbottle.eu-central-1.elasticbeanstalk.com/api")
+                                                                                             .build();
+        UserPoolResourceServer userPoolResourceServer = new UserPoolResourceServer(this, USERPOOL_RESOURCE_SERVER_ID, userPoolResourceServerProps);
+
+        // store userpool resource server id in SSM parameter storage
+        StringParameterProps stringParameterProps = StringParameterProps.builder()
+                                                                        .parameterName(USERPOOL_RESOURCE_SERVER_ID + SSM_PARAMETER_POSTFIX)
+                                                                        .stringValue(userPoolResourceServer.getUserPoolResourceServerId())
+                                                                        .build();
+        new StringParameter(this, USERPOOL_RESOURCE_SERVER_ID + SSM_PARAMETER_POSTFIX, stringParameterProps);
+
+        // output the userpool resource server id
+        CfnOutputProps cfnOutputProps = CfnOutputProps.builder()
+                                                      .value(userPoolResourceServer.getUserPoolResourceServerId())
+                                                      .build();
+        new CfnOutput(this, USERPOOL_RESOURCE_SERVER_ID + OUTPUT_PARAMETER_POSTFIX, cfnOutputProps);
     }
 }

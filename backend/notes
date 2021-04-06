@@ -1,3 +1,9 @@
 eb create DriftbottleEnvironment -k dirk_essquare_1 -c driftbottle -d --profile essquare -r eu-central-1 -v
 
 https://driftbottle.auth.eu-central-1.amazoncognito.com/login?client_id=1nvroct0nauqbneg6243nsroml&response_type=token&scope=http://driftbottle.eu-central-1.elasticbeanstalk.com/api/user.read&redirect_uri=https://driftbottlefrontendstack-driftbottlefrontendbucke-1oxh1th23rmqw.s3.eu-central-1.amazonaws.com/index.html
+
+
+
+move driftbottle.net DNS to AWS:
+    https://stackoverflow.com/questions/11602232/how-to-link-godaddy-domain-with-aws-elastic-beanstalk-environment
+    https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/domain-transfer-to-route-53.html

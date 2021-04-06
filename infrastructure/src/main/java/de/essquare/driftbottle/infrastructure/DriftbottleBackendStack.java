@@ -16,6 +16,8 @@ import software.amazon.awscdk.services.elasticbeanstalk.CfnEnvironmentProps;
 import software.amazon.awscdk.services.s3.assets.Asset;
 import software.amazon.awscdk.services.s3.assets.AssetProps;
 
+import static de.essquare.driftbottle.infrastructure.DriftbottleApp.OUTPUT_PARAMETER_POSTFIX;
+
 public class DriftbottleBackendStack extends Stack {
 
     public static final String CNAME_PREFIX = "driftbottle";
@@ -76,7 +78,7 @@ public class DriftbottleBackendStack extends Stack {
         CfnOutputProps cfnOutputProps = CfnOutputProps.builder()
                                                       .value("http://" + CNAME_PREFIX + "." + props.getEnv().getRegion() + ".elasticbeanstalk.com/api")
                                                       .build();
-        new CfnOutput(this, BASE_API_URL_ID + DriftbottleCognitoStack.OUTPUT_PARAMETER_POSTFIX, cfnOutputProps);
+        new CfnOutput(this, BASE_API_URL_ID + OUTPUT_PARAMETER_POSTFIX, cfnOutputProps);
     }
 
 }

@@ -14,6 +14,8 @@ import software.amazon.awscdk.services.s3.deployment.BucketDeploymentProps;
 import software.amazon.awscdk.services.s3.deployment.Source;
 import software.amazon.awscdk.services.ssm.StringParameter;
 import software.amazon.awscdk.services.ssm.StringParameterProps;
+import static de.essquare.driftbottle.infrastructure.DriftbottleApp.OUTPUT_PARAMETER_POSTFIX;
+import static de.essquare.driftbottle.infrastructure.DriftbottleApp.SSM_PARAMETER_POSTFIX;
 
 public class DriftbottleFrontendStack extends Stack {
 
@@ -22,8 +24,6 @@ public class DriftbottleFrontendStack extends Stack {
     public static final String FRONTEND_BUCKET_ID = "DriftbottleFrontendBucketId";
     public static final String FRONTEND_BUCKET_NAME = "DriftbottleFrontendBucketName";
     public static final String FRONTEND_BUCKET_DEPLOYMENT_ID = "DriftbottleFrontendBucketDeploymentId";
-    public static final String SSM_PARAMETER_POSTFIX = "SSMParameter";
-    public static final String OUTPUT_PARAMETER_POSTFIX = "OutputParameter";
 
     private Bucket frontendBucket;
 
@@ -32,6 +32,10 @@ public class DriftbottleFrontendStack extends Stack {
 
         createBucket();
         putFrontendCodeToBucket();
+    }
+
+    public Bucket getFrontendBucket() {
+        return frontendBucket;
     }
 
     private void createBucket() {
